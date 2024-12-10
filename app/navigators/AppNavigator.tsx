@@ -1,19 +1,19 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack'
+import type { ComponentProps } from 'react'
+import * as Screens from '@/screens'
+import { useAppTheme, useThemeProvider } from '@/utils/useAppTheme'
 /**
  * The app navigator (formerly "AppNavigator" and "MainNavigator") is used for the primary
  * navigation flows of your app.
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { NavigationContainer } from "@react-navigation/native"
-import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
-import { observer } from "mobx-react-lite"
-import * as Screens from "@/screens"
-import Config from "../config"
-import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
-import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
-import { ComponentProps } from "react"
-import { useAuth } from "app/services/auth/useAuth"
-
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { useAuth } from 'app/services/auth/useAuth'
+import { observer } from 'mobx-react-lite'
+import Config from '../config'
+import { navigationRef, useBackButtonHandler } from './navigationUtilities'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -28,11 +28,11 @@ import { useAuth } from "app/services/auth/useAuth"
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  *   https://reactnavigation.org/docs/typescript/#organizing-types
  */
-export type AppStackParamList = {
+export interface AppStackParamList {
   Home: undefined
-  // Your screens go here
-	SignIn: undefined
-	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  SignIn: undefined
+  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  [key: string]: undefined | object
 }
 
 /**
@@ -49,7 +49,7 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<AppStackParamList>()
 
-const AppStack = observer(function AppStack() {
+const AppStack = observer(() => {
   const { isAuthenticated } = useAuth()
 
   const {
@@ -70,13 +70,13 @@ const AppStack = observer(function AppStack() {
         <>
           {/** 🔥 Your screens go here */}
           <Stack.Screen name="Home" component={Screens.HomeScreen} />
-			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+          {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
         </>
       ) : (
         <Stack.Screen
           name="SignIn"
           component={Screens.SignInScreen}
-          options={{ animationTypeForReplace: "pop" }}
+          options={{ animationTypeForReplace: 'pop' }}
         />
       )}
     </Stack.Navigator>
@@ -85,11 +85,11 @@ const AppStack = observer(function AppStack() {
 
 export interface NavigationProps extends Partial<ComponentProps<typeof NavigationContainer>> {}
 
-export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
-  const { themeScheme, navigationTheme, setThemeContextOverride, ThemeProvider } =
-    useThemeProvider()
+export const AppNavigator = observer((props: NavigationProps) => {
+  const { themeScheme, navigationTheme, setThemeContextOverride, ThemeProvider }
+    = useThemeProvider()
 
-  useBackButtonHandler((routeName) => exitRoutes.includes(routeName))
+  useBackButtonHandler(routeName => exitRoutes.includes(routeName))
 
   return (
     <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>

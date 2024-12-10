@@ -1,10 +1,13 @@
-import { useEffect, useRef } from "react"
-import { StyleProp, View, ViewStyle, Animated } from "react-native"
-import { $styles } from "../../theme"
-import { $inputOuterBase, BaseToggleInputProps, ToggleProps, Toggle } from "./Toggle"
-import { useAppTheme } from "@/utils/useAppTheme"
+/* eslint-disable ts/no-use-before-define */
+import type { StyleProp, ViewStyle } from 'react-native'
+import type { BaseToggleInputProps, ToggleProps } from './Toggle'
+import { useAppTheme } from '@/utils/useAppTheme'
+import { useEffect, useRef } from 'react'
+import { Animated, View } from 'react-native'
+import { $styles } from '../../theme'
+import { $inputOuterBase, Toggle } from './Toggle'
 
-export interface RadioToggleProps extends Omit<ToggleProps<RadioInputProps>, "ToggleInput"> {
+export interface RadioToggleProps extends Omit<ToggleProps<RadioInputProps>, 'ToggleInput'> {
   /**
    * Optional style prop that affects the dot View.
    */
@@ -48,26 +51,26 @@ function RadioInput(props: RadioInputProps) {
 
   const offBackgroundColor = [
     disabled && colors.palette.neutral400,
-    status === "error" && colors.errorBackground,
+    status === 'error' && colors.errorBackground,
     colors.palette.neutral200,
   ].filter(Boolean)[0]
 
   const outerBorderColor = [
     disabled && colors.palette.neutral400,
-    status === "error" && colors.error,
+    status === 'error' && colors.error,
     !on && colors.palette.neutral800,
     colors.palette.secondary500,
   ].filter(Boolean)[0]
 
   const onBackgroundColor = [
     disabled && colors.transparent,
-    status === "error" && colors.errorBackground,
+    status === 'error' && colors.errorBackground,
     colors.palette.neutral100,
   ].filter(Boolean)[0]
 
   const dotBackgroundColor = [
     disabled && colors.palette.neutral600,
-    status === "error" && colors.error,
+    status === 'error' && colors.error,
     colors.palette.secondary500,
   ].filter(Boolean)[0]
 

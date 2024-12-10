@@ -1,16 +1,18 @@
-import { useState, useEffect, useRef } from "react"
-import { BackHandler, Linking, Platform } from "react-native"
-import {
+import type {
   NavigationState,
   PartialState,
+} from '@react-navigation/native'
+import type { PersistNavigationConfig } from '../config/config.base'
+import type * as storage from '../utils/storage'
+import type { AppStackParamList, NavigationProps } from './AppNavigator'
+import {
   createNavigationContainerRef,
-} from "@react-navigation/native"
-import Config from "../config"
-import type { PersistNavigationConfig } from "../config/config.base"
-import { useIsMounted } from "../utils/useIsMounted"
-import type { AppStackParamList, NavigationProps } from "./AppNavigator"
+} from '@react-navigation/native'
+import { useEffect, useRef, useState } from 'react'
+import { BackHandler, Linking, Platform } from 'react-native'
+import Config from '../config'
 
-import * as storage from "../utils/storage"
+import { useIsMounted } from '../utils/useIsMounted'
 
 type Storage = typeof storage
 
@@ -35,7 +37,8 @@ export function getActiveRouteName(state: NavigationState | PartialState<Navigat
   const route = state.routes[state.index ?? 0]
 
   // Found the active route -- return the name
-  if (!route.state) return route.name as keyof AppStackParamList
+  if (!route.state)
+    return route.name
 
   // Recursive call to deal with nested routers
   return getActiveRouteName(route.state as NavigationState<AppStackParamList>)
@@ -53,7 +56,7 @@ const iosExit = () => false
 export function useBackButtonHandler(canExit: (routeName: string) => boolean) {
   // The reason we're using a ref here is because we need to be able
   // to update the canExit function without re-setting up all the listeners
-  const canExitRef = useRef(Platform.OS !== "android" ? iosExit : canExit)
+  const canExitRef = useRef(Platform.OS !== 'android' ? iosExit : canExit)
 
   useEffect(() => {
     canExitRef.current = canExit
@@ -86,10 +89,10 @@ export function useBackButtonHandler(canExit: (routeName: string) => boolean) {
     }
 
     // Subscribe when we come to life
-    BackHandler.addEventListener("hardwareBackPress", onBackPress)
+    BackHandler.addEventListener('hardwareBackPress', onBackPress)
 
     // Unsubscribe when we're done
-    return () => BackHandler.removeEventListener("hardwareBackPress", onBackPress)
+    return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress)
   }, [])
 }
 
@@ -100,9 +103,12 @@ export function useBackButtonHandler(canExit: (routeName: string) => boolean) {
  * @returns {boolean} - Whether to restore navigation state by default.
  */
 function navigationRestoredDefaultState(persistNavigation: PersistNavigationConfig) {
-  if (persistNavigation === "always") return false
-  if (persistNavigation === "dev" && __DEV__) return false
-  if (persistNavigation === "prod" && !__DEV__) return false
+  if (persistNavigation === 'always')
+    return false
+  if (persistNavigation === 'dev' && __DEV__)
+    return false
+  if (persistNavigation === 'prod' && !__DEV__)
+    return false
 
   // all other cases, disable restoration by returning true
   return true
@@ -115,8 +121,8 @@ function navigationRestoredDefaultState(persistNavigation: PersistNavigationConf
  * @returns {object} - The navigation state and persistence functions.
  */
 export function useNavigationPersistence(storage: Storage, persistenceKey: string) {
-  const [initialNavigationState, setInitialNavigationState] =
-    useState<NavigationProps["initialState"]>()
+  const [initialNavigationState, setInitialNavigationState]
+    = useState<NavigationProps['initialState']>()
   const isMounted = useIsMounted()
 
   const initNavState = navigationRestoredDefaultState(Config.persistNavigation)
@@ -132,7 +138,7 @@ export function useNavigationPersistence(storage: Storage, persistenceKey: strin
       if (previousRouteName !== currentRouteName) {
         // track screens.
         if (__DEV__) {
-          console.log(currentRouteName)
+          // console.log(currentRouteName)
         }
       }
 
@@ -150,16 +156,20 @@ export function useNavigationPersistence(storage: Storage, persistenceKey: strin
 
       // Only restore the state if app has not started from a deep link
       if (!initialUrl) {
-        const state = (await storage.load(persistenceKey)) as NavigationProps["initialState"] | null
-        if (state) setInitialNavigationState(state)
+        const state = (await storage.load(persistenceKey)) as NavigationProps['initialState'] | null
+        if (state)
+          setInitialNavigationState(state)
       }
-    } finally {
-      if (isMounted()) setIsRestored(true)
+    }
+    finally {
+      if (isMounted())
+        setIsRestored(true)
     }
   }
 
   useEffect(() => {
-    if (!isRestored) restoreState()
+    if (!isRestored)
+      restoreState()
     // runs once on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -176,7 +186,7 @@ export function useNavigationPersistence(storage: Storage, persistenceKey: strin
  */
 export function navigate(name: unknown, params?: unknown) {
   if (navigationRef.isReady()) {
-    // @ts-expect-error
+    // @ts-expect-error - we're not typing the params here
     navigationRef.navigate(name as never, params as never)
   }
 }

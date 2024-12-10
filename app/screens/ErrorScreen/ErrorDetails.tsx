@@ -1,13 +1,15 @@
-import { ErrorInfo } from "react"
-import { ScrollView, TextStyle, View, ViewStyle } from "react-native"
-import { Button, Icon, Screen, Text } from "../../components"
-import type { ThemedStyle } from "@/theme"
-import { useAppTheme } from "@/utils/useAppTheme"
+/* eslint-disable ts/no-use-before-define */
+import type { ThemedStyle } from '@/theme'
+import type { ErrorInfo } from 'react'
+import type { TextStyle, ViewStyle } from 'react-native'
+import { useAppTheme } from '@/utils/useAppTheme'
+import { ScrollView, View } from 'react-native'
+import { Button, Icon, Screen, Text } from '../../components'
 
 export interface ErrorDetailsProps {
   error: Error
   errorInfo: ErrorInfo | null
-  onReset(): void
+  onReset: () => void
 }
 
 /**
@@ -20,7 +22,7 @@ export function ErrorDetails(props: ErrorDetailsProps) {
   return (
     <Screen
       preset="fixed"
-      safeAreaEdges={["top", "bottom"]}
+      safeAreaEdges={['top', 'bottom']}
       contentContainerStyle={themed($contentContainer)}
     >
       <View style={$topSection}>
@@ -37,7 +39,7 @@ export function ErrorDetails(props: ErrorDetailsProps) {
         <Text
           selectable
           style={themed($errorBacktrace)}
-          text={`${props.errorInfo?.componentStack ?? ""}`.trim()}
+          text={`${props.errorInfo?.componentStack ?? ''}`.trim()}
         />
       </ScrollView>
 
@@ -52,7 +54,7 @@ export function ErrorDetails(props: ErrorDetailsProps) {
 }
 
 const $contentContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  alignItems: "center",
+  alignItems: 'center',
   paddingHorizontal: spacing.lg,
   paddingTop: spacing.xl,
   flex: 1,
@@ -60,7 +62,7 @@ const $contentContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const $topSection: ViewStyle = {
   flex: 1,
-  alignItems: "center",
+  alignItems: 'center',
 }
 
 const $heading: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({

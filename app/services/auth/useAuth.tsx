@@ -1,26 +1,31 @@
-// eslint-disable-next-line no-restricted-imports, @typescript-eslint/no-unused-vars
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/no-unstable-context-value */
+/* eslint-disable node/prefer-global/process */
+import type { AuthResponse, AuthTokenResponsePassword } from '@supabase/supabase-js'
+import type {
+  PropsWithChildren,
+} from 'react'
+import type { Session } from './supabase'
 import React, {
   createContext,
-  PropsWithChildren,
   useCallback,
   useContext,
   useEffect,
   useState,
-} from "react"
-import { Session, supabase } from "./supabase"
-import { AuthResponse, AuthTokenResponsePassword } from "@supabase/supabase-js"
+} from 'react'
+import { supabase } from './supabase'
 
-type AuthState = {
+interface AuthState {
   isAuthenticated: boolean
-  token?: Session["access_token"]
+  token?: Session['access_token']
 }
 
-type SignInProps = {
+interface SignInProps {
   email: string
   password: string
 }
 
-type SignUpProps = {
+interface SignUpProps {
   email: string
   password: string
 }
@@ -39,32 +44,33 @@ const AuthContext = createContext<AuthContextType>({
   signOut: () => undefined,
 })
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const value = useContext(AuthContext)
 
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== 'production') {
     if (!value) {
-      throw new Error("useAuth must be used within an AuthProvider")
+      throw new Error('useAuth must be used within an AuthProvider')
     }
   }
 
   return value
 }
 
-export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [token, setToken] = useState<AuthState["token"]>(undefined)
+export function AuthProvider({ children }: PropsWithChildren) {
+  const [token, setToken] = useState<AuthState['token']>(undefined)
 
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       switch (event) {
-        case "SIGNED_OUT":
+        case 'SIGNED_OUT':
           setToken(undefined)
           break
-        case "INITIAL_SESSION":
-        case "SIGNED_IN":
-        case "TOKEN_REFRESHED":
+        case 'INITIAL_SESSION':
+        case 'SIGNED_IN':
+        case 'TOKEN_REFRESHED':
           setToken(session?.access_token)
           break
         default:

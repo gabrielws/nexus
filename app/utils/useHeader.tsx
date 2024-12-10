@@ -1,6 +1,7 @@
-import { useLayoutEffect } from "react"
-import { useNavigation } from "@react-navigation/native"
-import { Header, HeaderProps } from "../components"
+import type { HeaderProps } from '../components'
+import { useNavigation } from '@react-navigation/native'
+import { useLayoutEffect } from 'react'
+import { Header } from '../components'
 
 /**
  * A hook that can be used to easily set the Header of a react-navigation screen from within the screen's component.

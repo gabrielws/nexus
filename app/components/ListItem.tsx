@@ -1,17 +1,23 @@
-import { forwardRef, ReactElement } from "react"
-import {
+/* eslint-disable ts/no-use-before-define */
+import type { ThemedStyle } from '@/theme'
+import type { ReactElement } from 'react'
+import type {
   StyleProp,
   TextStyle,
-  TouchableOpacity,
   TouchableOpacityProps,
-  View,
   ViewStyle,
-} from "react-native"
-import { $styles } from "../theme"
-import { Icon, IconTypes } from "./Icon"
-import { Text, TextProps } from "./Text"
-import type { ThemedStyle } from "@/theme"
-import { useAppTheme } from "@/utils/useAppTheme"
+} from 'react-native'
+import type { IconTypes } from './Icon'
+import type { TextProps } from './Text'
+import { useAppTheme } from '@/utils/useAppTheme'
+import { forwardRef } from 'react'
+import {
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import { $styles } from '../theme'
+import { Icon } from './Icon'
+import { Text } from './Text'
 
 export interface ListItemProps extends TouchableOpacityProps {
   /**
@@ -32,20 +38,20 @@ export interface ListItemProps extends TouchableOpacityProps {
   /**
    * Text to display if not using `tx` or nested components.
    */
-  text?: TextProps["text"]
+  text?: TextProps['text']
   /**
    * Text which is looked up via i18n.
    */
-  tx?: TextProps["tx"]
+  tx?: TextProps['tx']
   /**
    * Children components.
    */
-  children?: TextProps["children"]
+  children?: TextProps['children']
   /**
    * Optional options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  txOptions?: TextProps["txOptions"]
+  txOptions?: TextProps['txOptions']
   /**
    * Optional text style override.
    */
@@ -95,7 +101,7 @@ interface ListItemActionProps {
   iconColor?: string
   Component?: ReactElement
   size: number
-  side: "left" | "right"
+  side: 'left' | 'right'
 }
 
 /**
@@ -104,10 +110,10 @@ interface ListItemActionProps {
  * @param {ListItemProps} props - The props for the `ListItem` component.
  * @returns {JSX.Element} The rendered `ListItem` component.
  */
-export const ListItem = forwardRef<View, ListItemProps>(function ListItem(
+export const ListItem = forwardRef<View, ListItemProps>((
   props: ListItemProps,
   ref,
-) {
+) => {
   const {
     bottomSeparator,
     children,
@@ -177,7 +183,8 @@ function ListItemAction(props: ListItemActionProps) {
 
   const $iconContainerStyles = [$iconContainer]
 
-  if (Component) return Component
+  if (Component)
+    return Component
 
   if (icon !== undefined) {
     return (
@@ -187,8 +194,8 @@ function ListItemAction(props: ListItemActionProps) {
         color={iconColor}
         containerStyle={themed([
           $iconContainerStyles,
-          side === "left" && $iconContainerLeft,
-          side === "right" && $iconContainerRight,
+          side === 'left' && $iconContainerLeft,
+          side === 'right' && $iconContainerRight,
           { height: size },
         ])}
       />
@@ -210,18 +217,18 @@ const $separatorBottom: ThemedStyle<ViewStyle> = ({ colors }) => ({
 
 const $textStyle: ThemedStyle<TextStyle> = ({ spacing }) => ({
   paddingVertical: spacing.xs,
-  alignSelf: "center",
+  alignSelf: 'center',
   flexGrow: 1,
   flexShrink: 1,
 })
 
 const $touchableStyle: ViewStyle = {
-  alignItems: "flex-start",
+  alignItems: 'flex-start',
 }
 
 const $iconContainer: ViewStyle = {
-  justifyContent: "center",
-  alignItems: "center",
+  justifyContent: 'center',
+  alignItems: 'center',
   flexGrow: 0,
 }
 const $iconContainerLeft: ThemedStyle<ViewStyle> = ({ spacing }) => ({

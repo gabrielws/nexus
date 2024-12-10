@@ -14,44 +14,45 @@ if (__DEV__) {
   // Load Reactotron in development only.
   // Note that you must be using metro's `inlineRequires` for this to work.
   // If you turn it off in metro.config.js, you'll have to manually import it.
-  require("./devtools/ReactotronConfig.ts")
+  // eslint-disable-next-line ts/no-require-imports
+  require('./devtools/ReactotronConfig.ts')
 }
-import "./utils/gestureHandler"
-import { initI18n } from "./i18n"
-import "./utils/ignoreWarnings"
-import { useFonts } from "expo-font"
-import { useEffect, useState } from "react"
-import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
-import * as Linking from "expo-linking"
-import { useInitialRootStore } from "./models"
-import { AppNavigator, useNavigationPersistence } from "./navigators"
-import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
-import * as storage from "./utils/storage"
-import { customFontsToLoad } from "./theme"
-import Config from "./config"
-import { KeyboardProvider } from "react-native-keyboard-controller"
-import { loadDateFnsLocale } from "./utils/formatDate"
-import { AuthProvider } from "./services/auth/useAuth"
+import { useFonts } from 'expo-font'
+import * as Linking from 'expo-linking'
+import { useEffect, useState } from 'react'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
+import Config from './config'
+import { initI18n } from './i18n'
+import { useInitialRootStore } from './models'
+import { AppNavigator, useNavigationPersistence } from './navigators'
+import { ErrorBoundary } from './screens/ErrorScreen/ErrorBoundary'
+import { AuthProvider } from './services/auth/useAuth'
+import { customFontsToLoad } from './theme'
+import { loadDateFnsLocale } from './utils/formatDate'
+import * as storage from './utils/storage'
+import './utils/gestureHandler'
+import './utils/ignoreWarnings'
 
-
-export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
+// eslint-disable-next-line react-refresh/only-export-components
+export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
 // Web linking configuration
-const prefix = Linking.createURL("/")
+const prefix = Linking.createURL('/')
 const config = {
   screens: {
     Login: {
-      path: "",
+      path: '',
     },
-    Welcome: "welcome",
+    Welcome: 'welcome',
     Demo: {
       screens: {
         DemoShowroom: {
-          path: "showroom/:queryIndex?/:itemIndex?",
+          path: 'showroom/:queryIndex?/:itemIndex?',
         },
-        DemoDebug: "debug",
-        DemoPodcastList: "podcast",
-        DemoCommunity: "community",
+        DemoDebug: 'debug',
+        DemoPodcastList: 'podcast',
+        DemoCommunity: 'community',
       },
     },
   },
@@ -100,10 +101,10 @@ function App(props: AppProps) {
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
   if (
-    !rehydrated ||
-    !isNavigationStateRestored ||
-    !isI18nInitialized ||
-    (!areFontsLoaded && !fontLoadError)
+    !rehydrated
+    || !isNavigationStateRestored
+    || !isI18nInitialized
+    || (!areFontsLoaded && !fontLoadError)
   ) {
     return null
   }
@@ -116,19 +117,18 @@ function App(props: AppProps) {
   // otherwise, we're ready to render the app
   return (
     <AuthProvider>
-
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <ErrorBoundary catchErrors={Config.catchErrors}>
-        <KeyboardProvider>
-          <AppNavigator
-            linking={linking}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <ErrorBoundary catchErrors={Config.catchErrors}>
+          <KeyboardProvider>
+            <AppNavigator
+              linking={linking}
+              initialState={initialNavigationState}
+              onStateChange={onNavigationStateChange}
             />
-        </KeyboardProvider>
-      </ErrorBoundary>
-    </SafeAreaProvider>
-            </AuthProvider>
+          </KeyboardProvider>
+        </ErrorBoundary>
+      </SafeAreaProvider>
+    </AuthProvider>
   )
 }
 

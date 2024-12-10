@@ -1,5 +1,8 @@
-import { useLayoutEffect, useState } from "react"
-import { Image, ImageProps, ImageURISource, Platform } from "react-native"
+/* eslint-disable react/prefer-destructuring-assignment */
+/* eslint-disable react-refresh/only-export-components */
+import type { ImageProps, ImageURISource } from 'react-native'
+import { useLayoutEffect, useState } from 'react'
+import { Image, Platform } from 'react-native'
 
 export interface AutoImageProps extends ImageProps {
   /**
@@ -33,21 +36,26 @@ export function useAutoImage(
   const [maxWidth, maxHeight] = dimensions ?? []
 
   useLayoutEffect(() => {
-    if (!remoteUri) return
+    if (!remoteUri)
+      return
 
     Image.getSize(remoteUri, (w, h) => setRemoteImageDimensions([w, h]))
   }, [remoteUri])
 
-  if (Number.isNaN(remoteAspectRatio)) return [0, 0]
+  if (Number.isNaN(remoteAspectRatio))
+    return [0, 0]
 
   if (maxWidth && maxHeight) {
     const aspectRatio = Math.min(maxWidth / remoteWidth, maxHeight / remoteHeight)
     return [remoteWidth * aspectRatio, remoteHeight * aspectRatio]
-  } else if (maxWidth) {
+  }
+  else if (maxWidth) {
     return [maxWidth, maxWidth / remoteAspectRatio]
-  } else if (maxHeight) {
+  }
+  else if (maxHeight) {
     return [maxHeight * remoteAspectRatio, maxHeight]
-  } else {
+  }
+  else {
     return [remoteWidth, remoteHeight]
   }
 }
