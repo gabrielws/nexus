@@ -15,7 +15,8 @@
       "backgroundColor": "#191015"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/f8897525-cf19-4ba1-90cf-6b9296df2376"
     },
     "jsEngine": "hermes",
     "assetBundlePatterns": [
@@ -71,6 +72,14 @@
     ],
     "experiments": {
       "tsconfigPaths": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f8897525-cf19-4ba1-90cf-6b9296df2376"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   },
   "ignite": {

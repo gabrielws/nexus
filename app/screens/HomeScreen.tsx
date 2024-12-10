@@ -1,20 +1,22 @@
 import { observer } from "mobx-react-lite"
 import { FC } from "react"
 import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
-import { Text, Screen } from "@/components"
+import { Button, Text, Screen } from "@/components"
 import { isRTL } from "../i18n"
 import { AppStackScreenProps } from "../navigators"
 import type { ThemedStyle } from "@/theme"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { useAppTheme } from "@/utils/useAppTheme"
+import { useAuth } from "app/services/auth/useAuth"
 
 const welcomeLogo = require("../../assets/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")
 
-interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
+interface HomeProps extends AppStackScreenProps<"Home"> {}
 
-export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen() {
+export const HomeScreen: FC<HomeProps> = observer(function Home() {
   const { themed, theme } = useAppTheme()
+  const { signOut } = useAuth()
 
   const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
 
@@ -25,7 +27,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
         <Text
           testID="welcome-heading"
           style={themed($welcomeHeading)}
-          tx="welcomeScreen:readyForLaunch"
+          text="Congratulations 🎉 You're signed in!"
           preset="heading"
         />
         <Text tx="welcomeScreen:exciting" preset="subheading" />
@@ -38,7 +40,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       </View>
 
       <View style={themed([$bottomContainer, $bottomContainerInsets])}>
-        <Text tx="welcomeScreen:postscript" size="md" />
+        <Button onPress={signOut}>Sign Out</Button>
       </View>
     </Screen>
   )

@@ -2,6 +2,8 @@ export interface ConfigBaseProps {
   persistNavigation: "always" | "dev" | "prod" | "never"
   catchErrors: "always" | "dev" | "prod" | "never"
   exitRoutes: string[]
+  supabaseUrl: string
+  supabaseAnonKey: string
 }
 
 export type PersistNavigationConfig = ConfigBaseProps["persistNavigation"]
@@ -20,7 +22,9 @@ const BaseConfig: ConfigBaseProps = {
    * This is a list of all the route names that will exit the app if the back button
    * is pressed while in that screen. Only affects Android.
    */
-  exitRoutes: ["Welcome"],
+  exitRoutes: ["Home"],
+  supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL!,
+  supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
 }
 
 export default BaseConfig
