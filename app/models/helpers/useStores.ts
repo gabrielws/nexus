@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react"
-import { RootStore, RootStoreModel } from "../RootStore"
-import { setupRootStore } from "./setupRootStore"
+import { createContext, useContext, useEffect, useState } from 'react'
+import type { RootStore } from '../RootStore'
+import { RootStoreModel } from '../RootStore'
+import { setupRootStore } from './setupRootStore'
 
 /**
  * Create the initial (empty) global RootStore instance here.
@@ -49,7 +50,7 @@ export const useStores = () => useContext(RootStoreContext)
  * @param {() => void | Promise<void>} callback - an optional callback that's invoked once the store is ready
  * @returns {object} - the RootStore and rehydrated state
  */
-export const useInitialRootStore = (callback?: () => void | Promise<void>) => {
+export function useInitialRootStore(callback?: () => void | Promise<void>) {
   const rootStore = useStores()
   const [rehydrated, setRehydrated] = useState(false)
 
@@ -63,7 +64,7 @@ export const useInitialRootStore = (callback?: () => void | Promise<void>) => {
 
       // reactotron integration with the MST root store (DEV only)
       if (__DEV__) {
-        // @ts-ignore
+        // @ts-expect-error - the MST types are a bit wonky
         console.tron.trackMstNode(rootStore)
       }
 
@@ -71,12 +72,14 @@ export const useInitialRootStore = (callback?: () => void | Promise<void>) => {
       setRehydrated(true)
 
       // invoke the callback, if provided
-      if (callback) callback()
+      if (callback)
+        callback()
     })()
 
     return () => {
       // cleanup
-      if (_unsubscribe !== undefined) _unsubscribe()
+      if (_unsubscribe !== undefined)
+        _unsubscribe()
     }
     // only runs on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps

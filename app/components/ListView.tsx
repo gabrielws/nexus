@@ -1,9 +1,9 @@
-import type { FlashListProps } from '@shopify/flash-list'
 import type { ForwardedRef, PropsWithoutRef, ReactElement, RefObject } from 'react'
-import { isRTL } from '@/i18n'
-import { FlashList } from '@shopify/flash-list'
 import { forwardRef } from 'react'
 import { FlatList } from 'react-native'
+import { isRTL } from '@/i18n'
+import type { FlashListProps } from '@shopify/flash-list'
+import { FlashList } from '@shopify/flash-list'
 
 export type ListViewRef<T> = FlashList<T> | FlatList<T>
 

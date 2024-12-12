@@ -1,10 +1,9 @@
-/* eslint-disable ts/no-use-before-define */
-import type { ThemedStyle } from '@/theme'
 import type { ErrorInfo } from 'react'
 import type { TextStyle, ViewStyle } from 'react-native'
-import { useAppTheme } from '@/utils/useAppTheme'
 import { ScrollView, View } from 'react-native'
 import { Button, Icon, Screen, Text } from '../../components'
+import type { ThemedStyle } from '@/theme'
+import { useAppTheme } from '@/utils/useAppTheme'
 
 export interface ErrorDetailsProps {
   error: Error

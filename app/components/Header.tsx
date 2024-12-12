@@ -1,6 +1,4 @@
-/* eslint-disable ts/no-use-before-define */
 /* eslint-disable react/no-unstable-default-props */
-import type { ThemedStyle } from '@/theme'
 import type { ReactElement } from 'react'
 import type {
   StyleProp,
@@ -8,19 +6,20 @@ import type {
   TouchableOpacityProps,
   ViewStyle,
 } from 'react-native'
-import type { ExtendedEdge } from '../utils/useSafeAreaInsetsStyle'
-import type { IconTypes } from './Icon'
-import type { TextProps } from './Text'
-import { useAppTheme } from '@/utils/useAppTheme'
 import {
   TouchableOpacity,
   View,
 } from 'react-native'
 import { isRTL, translate } from '../i18n'
 import { $styles } from '../theme'
+import type { ExtendedEdge } from '../utils/useSafeAreaInsetsStyle'
 import { useSafeAreaInsetsStyle } from '../utils/useSafeAreaInsetsStyle'
+import type { IconTypes } from './Icon'
 import { Icon } from './Icon'
+import type { TextProps } from './Text'
 import { Text } from './Text'
+import { useAppTheme } from '@/utils/useAppTheme'
+import type { ThemedStyle } from '@/theme'
 
 export interface HeaderProps {
   /**
@@ -157,6 +156,7 @@ export function Header(props: HeaderProps) {
     theme: { colors },
     themed,
   } = useAppTheme()
+
   const {
     backgroundColor = colors.background,
     LeftActionComponent,

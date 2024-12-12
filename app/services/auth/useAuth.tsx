@@ -44,7 +44,6 @@ const AuthContext = createContext<AuthContextType>({
   signOut: () => undefined,
 })
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const value = useContext(AuthContext)
 

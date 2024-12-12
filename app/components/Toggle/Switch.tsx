@@ -1,25 +1,24 @@
-/* eslint-disable ts/no-use-before-define */
-import type { ThemedStyle } from '@/theme'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import type {
   ImageStyle,
   StyleProp,
   TextStyle,
   ViewStyle,
 } from 'react-native'
-
-import type { BaseToggleInputProps, ToggleProps } from './Toggle'
-import { iconRegistry } from '@/components/Icon'
-import { isRTL } from '@/i18n'
-import { $styles } from '@/theme'
-import { useAppTheme } from '@/utils/useAppTheme'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   Animated,
   Image,
   Platform,
   View,
 } from 'react-native'
+
+import { $styles } from '@/theme'
+import { iconRegistry } from '@/components/Icon'
+import { isRTL } from '@/i18n'
+import type { BaseToggleInputProps, ToggleProps } from './Toggle'
 import { $inputOuterBase, Toggle } from './Toggle'
+import { useAppTheme } from '@/utils/useAppTheme'
+import type { ThemedStyle } from '@/theme'
 
 export interface SwitchToggleProps extends Omit<ToggleProps<SwitchInputProps>, 'ToggleInput'> {
   /**
@@ -101,13 +100,13 @@ function SwitchInput(props: SwitchInputProps) {
     disabled && colors.palette.neutral400,
     status === 'error' && colors.errorBackground,
     colors.palette.neutral300,
-  ].filter(Boolean)[0]
+  ].filter(Boolean)[0] as any
 
   const onBackgroundColor = [
     disabled && colors.transparent,
     status === 'error' && colors.errorBackground,
     colors.palette.secondary500,
-  ].filter(Boolean)[0]
+  ].filter(Boolean)[0] as any
 
   const knobBackgroundColor = (function () {
     if (on) {
@@ -116,7 +115,7 @@ function SwitchInput(props: SwitchInputProps) {
         status === 'error' && colors.error,
         disabled && colors.palette.neutral600,
         colors.palette.neutral100,
-      ].filter(Boolean)[0]
+      ].filter(Boolean)[0] as any
     }
     else {
       return [
@@ -124,7 +123,7 @@ function SwitchInput(props: SwitchInputProps) {
         disabled && colors.palette.neutral600,
         status === 'error' && colors.error,
         colors.palette.neutral200,
-      ].filter(Boolean)[0]
+      ].filter(Boolean)[0] as any
     }
   })()
 

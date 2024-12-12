@@ -1,23 +1,22 @@
-/* eslint-disable ts/no-use-before-define */
-import type { ThemedStyle } from '@/theme'
 import type { ReactElement } from 'react'
+import { forwardRef } from 'react'
 import type {
   StyleProp,
   TextStyle,
   TouchableOpacityProps,
   ViewStyle,
 } from 'react-native'
-import type { IconTypes } from './Icon'
-import type { TextProps } from './Text'
-import { useAppTheme } from '@/utils/useAppTheme'
-import { forwardRef } from 'react'
 import {
   TouchableOpacity,
   View,
 } from 'react-native'
 import { $styles } from '../theme'
+import type { IconTypes } from './Icon'
 import { Icon } from './Icon'
+import type { TextProps } from './Text'
 import { Text } from './Text'
+import type { ThemedStyle } from '@/theme'
+import { useAppTheme } from '@/utils/useAppTheme'
 
 export interface ListItemProps extends TouchableOpacityProps {
   /**

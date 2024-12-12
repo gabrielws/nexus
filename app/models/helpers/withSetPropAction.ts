@@ -1,4 +1,4 @@
-import { IStateTreeNode, SnapshotIn } from "mobx-state-tree"
+import type { IStateTreeNode, SnapshotIn } from 'mobx-state-tree'
 
 /**
  * If you include this in your model in an action() block just under your props,
@@ -21,10 +21,12 @@ import { IStateTreeNode, SnapshotIn } from "mobx-state-tree"
  *   user.setProp("age", 30)      // no type error
  *   user.setProp("age", "30")    // type error -- must be number
  */
-export const withSetPropAction = <T extends IStateTreeNode>(mstInstance: T) => ({
+export function withSetPropAction<T extends IStateTreeNode>(mstInstance: T) {
+  return {
   // generic setter for all properties
-  setProp<K extends keyof SnapshotIn<T>, V extends SnapshotIn<T>[K]>(field: K, newValue: V) {
-    // @ts-ignore - for some reason TS complains about this, but it still works fine
-    mstInstance[field] = newValue
-  },
-})
+    setProp<K extends keyof SnapshotIn<T>, V extends SnapshotIn<T>[K]>(field: K, newValue: V) {
+    // @ts-expect-error - for some reason TS complains about this, but it still works fine
+      mstInstance[field] = newValue
+    },
+  }
+}

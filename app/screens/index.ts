@@ -1,4 +1,7 @@
 export * from './ErrorScreen/ErrorBoundary'
-// export other screens here
-export * from './HomeScreen'
+export * from './MapScreen'
+export * from './RewardsScreen'
+export * from './ScoreboardScreen'
+export * from './SettingsScreen'
 export * from './SignInScreen'
+export * from './WelcomeScreen'

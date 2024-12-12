@@ -1,4 +1,5 @@
-/* eslint-disable ts/no-use-before-define */
+/* eslint-disable react/prefer-destructuring-assignment */
+
 import type { TextFieldAccessoryProps } from 'app/components'
 import type { AppStackScreenProps } from 'app/navigators'
 import type { ComponentType, FC } from 'react'
@@ -11,7 +12,6 @@ import { observer } from 'mobx-react-lite'
 import React, { useMemo, useRef, useState } from 'react'
 import { Image, Pressable, View } from 'react-native'
 
-// eslint-disable-next-line ts/no-require-imports
 const logo = require('../../assets/images/logo.png')
 
 interface SignInScreenProps extends AppStackScreenProps<'SignIn'> {}

@@ -1,5 +1,3 @@
-/* eslint-disable react/prefer-destructuring-assignment */
-/* eslint-disable ts/no-use-before-define */
 import type { ThemedStyle, ThemedStyleArray } from '@/theme'
 import type { ComponentType } from 'react'
 import type {
@@ -11,6 +9,7 @@ import type {
 } from 'react-native'
 import type { TextProps } from './Text'
 import { useAppTheme } from '@/utils/useAppTheme'
+import React from 'react'
 import {
   Pressable,
 } from 'react-native'

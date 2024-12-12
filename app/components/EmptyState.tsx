@@ -1,8 +1,3 @@
-/* eslint-disable ts/no-use-before-define */
-/* eslint-disable react/prefer-destructuring-assignment */
-/* eslint-disable react/no-unstable-default-props */
-/* eslint-disable ts/no-require-imports */
-/* eslint-disable perfectionist/sort-imports */
 import type { ThemedStyle } from '@/theme'
 import type { ImageProps, ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native'
 import type { ButtonProps } from './Button'
@@ -116,6 +111,15 @@ interface EmptyStatePresetItem {
   button: TextProps['text']
 }
 
+const EmptyStatePresets = {
+  generic: {
+    imageSource: sadFace,
+    heading: translate('emptyStateComponent:generic.heading'),
+    content: translate('emptyStateComponent:generic.content'),
+    button: translate('emptyStateComponent:generic.button'),
+  } as EmptyStatePresetItem,
+} as const
+
 /**
  * A component to use when there is no data to display. It can be utilized to direct the user what to do next.
  * @see [Documentation and Examples]{@link https://docs.infinite.red/ignite-cli/boilerplate/app/components/EmptyState/}
@@ -128,15 +132,6 @@ export function EmptyState(props: EmptyStateProps) {
     themed,
     theme: { spacing },
   } = useAppTheme()
-
-  const EmptyStatePresets = {
-    generic: {
-      imageSource: sadFace,
-      heading: translate('emptyStateComponent:generic.heading'),
-      content: translate('emptyStateComponent:generic.content'),
-      button: translate('emptyStateComponent:generic.button'),
-    } as EmptyStatePresetItem,
-  } as const
 
   const preset = EmptyStatePresets[props.preset ?? 'generic']
 

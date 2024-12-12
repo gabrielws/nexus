@@ -1,14 +1,12 @@
-/* eslint-disable react/prefer-destructuring-assignment */
-/* eslint-disable ts/no-use-before-define */
-import type { ThemedStyle, ThemedStyleArray } from '@/theme'
 import type { TOptions } from 'i18next'
-import type { ReactNode } from 'react'
 import type { TextProps as RNTextProps, StyleProp, TextStyle } from 'react-native'
-import type { TxKeyPath } from '../i18n'
-import { typography } from '@/theme/typography'
-import { useAppTheme } from '@/utils/useAppTheme'
 import { Text as RNText } from 'react-native'
+import type { TxKeyPath } from '../i18n'
 import { isRTL, translate } from '../i18n'
+import type { ThemedStyle, ThemedStyleArray } from '@/theme'
+import { useAppTheme } from '@/utils/useAppTheme'
+import { typography } from '@/theme/typography'
+import type { ReactNode } from 'react'
 
 type Sizes = keyof typeof $sizeStyles
 type Weights = keyof typeof typography.primary

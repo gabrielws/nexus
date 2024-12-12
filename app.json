@@ -9,80 +9,47 @@
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/images/app-icon-all.png",
-    "splash": {
-      "image": "./assets/images/splash-logo-all.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#191015"
-    },
     "updates": {
-      "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/f8897525-cf19-4ba1-90cf-6b9296df2376"
+      "fallbackToCacheTimeout": 0
     },
+    "newArchEnabled": true,
     "jsEngine": "hermes",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "icon": "./assets/images/app-icon-android-legacy.png",
       "package": "com.nexus",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app-icon-android-adaptive-foreground.png",
         "backgroundImage": "./assets/images/app-icon-android-adaptive-background.png"
-      },
-      "splash": {
-        "image": "./assets/images/splash-logo-android-universal.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#191015"
       }
     },
     "ios": {
       "icon": "./assets/images/app-icon-ios.png",
       "supportsTablet": true,
-      "bundleIdentifier": "com.nexus",
-      "splash": {
-        "image": "./assets/images/splash-logo-ios-mobile.png",
-        "tabletImage": "./assets/images/splash-logo-ios-tablet.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#191015"
-      }
+      "bundleIdentifier": "com.nexus"
     },
     "web": {
       "favicon": "./assets/images/app-icon-web-favicon.png",
-      "splash": {
-        "image": "./assets/images/splash-logo-web.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#191015"
-      },
       "bundler": "metro"
     },
     "plugins": [
       "expo-localization",
+      "expo-font",
       [
-        "expo-build-properties",
+        "expo-splash-screen",
         {
-          "ios": {
-            "newArchEnabled": false
-          },
-          "android": {
-            "newArchEnabled": false
-          }
+          "image": "./assets/images/app-icon-android-adaptive-foreground.png",
+          "imageWidth": 300,
+          "resizeMode": "contain",
+          "backgroundColor": "#191015"
         }
-      ],
-      "expo-font"
+      ]
     ],
     "experiments": {
       "tsconfigPaths": true
-    },
-    "extra": {
-      "eas": {
-        "projectId": "f8897525-cf19-4ba1-90cf-6b9296df2376"
-      }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
     }
   },
   "ignite": {
-    "version": "10.0.5"
+    "version": "10.1.0"
   }
 }

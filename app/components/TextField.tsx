@@ -1,6 +1,5 @@
-/* eslint-disable ts/no-use-before-define */
-import type { ThemedStyle, ThemedStyleArray } from '@/theme'
 import type { ComponentType, Ref } from 'react'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
 import type {
   ImageStyle,
   StyleProp,
@@ -8,17 +7,17 @@ import type {
   TextStyle,
   ViewStyle,
 } from 'react-native'
-import type { TextProps } from './Text'
-import { useAppTheme } from '@/utils/useAppTheme'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
 import {
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native'
 import { isRTL, translate } from '../i18n'
+import type { ThemedStyle, ThemedStyleArray } from '@/theme'
 import { $styles } from '../theme'
+import type { TextProps } from './Text'
 import { Text } from './Text'
+import { useAppTheme } from '@/utils/useAppTheme'
 
 export interface TextFieldAccessoryProps {
   style: StyleProp<ViewStyle | TextStyle | ImageStyle>

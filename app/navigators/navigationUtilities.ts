@@ -1,18 +1,18 @@
+import { useEffect, useRef, useState } from 'react'
+import { BackHandler, Linking, Platform } from 'react-native'
 import type {
   NavigationState,
   PartialState,
 } from '@react-navigation/native'
-import type { PersistNavigationConfig } from '../config/config.base'
-import type * as storage from '../utils/storage'
-import type { AppStackParamList, NavigationProps } from './AppNavigator'
 import {
   createNavigationContainerRef,
 } from '@react-navigation/native'
-import { useEffect, useRef, useState } from 'react'
-import { BackHandler, Linking, Platform } from 'react-native'
 import Config from '../config'
-
+import type { PersistNavigationConfig } from '../config/config.base'
 import { useIsMounted } from '../utils/useIsMounted'
+import type { AppStackParamList, NavigationProps } from './AppNavigator'
+
+import type * as storage from '../utils/storage'
 
 type Storage = typeof storage
 
@@ -38,7 +38,7 @@ export function getActiveRouteName(state: NavigationState | PartialState<Navigat
 
   // Found the active route -- return the name
   if (!route.state)
-    return route.name
+    return route.name as any
 
   // Recursive call to deal with nested routers
   return getActiveRouteName(route.state as NavigationState<AppStackParamList>)
@@ -138,7 +138,7 @@ export function useNavigationPersistence(storage: Storage, persistenceKey: strin
       if (previousRouteName !== currentRouteName) {
         // track screens.
         if (__DEV__) {
-          // console.log(currentRouteName)
+          console.log(currentRouteName)
         }
       }
 
@@ -186,7 +186,6 @@ export function useNavigationPersistence(storage: Storage, persistenceKey: strin
  */
 export function navigate(name: unknown, params?: unknown) {
   if (navigationRef.isReady()) {
-    // @ts-expect-error - we're not typing the params here
     navigationRef.navigate(name as never, params as never)
   }
 }

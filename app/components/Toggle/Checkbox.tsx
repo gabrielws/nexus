@@ -1,13 +1,12 @@
-/* eslint-disable ts/no-use-before-define */
-import type { ImageStyle, StyleProp, ViewStyle } from 'react-native'
-import type { IconTypes } from '../Icon'
-import type { BaseToggleInputProps, ToggleProps } from './Toggle'
-import { useAppTheme } from '@/utils/useAppTheme'
 import { useCallback, useEffect, useRef } from 'react'
+import type { ImageStyle, StyleProp, ViewStyle } from 'react-native'
 import { Animated, Image, View } from 'react-native'
 import { $styles } from '../../theme'
+import type { IconTypes } from '../Icon'
 import { iconRegistry } from '../Icon'
+import type { BaseToggleInputProps, ToggleProps } from './Toggle'
 import { $inputOuterBase, Toggle } from './Toggle'
+import { useAppTheme } from '@/utils/useAppTheme'
 
 export interface CheckboxToggleProps extends Omit<ToggleProps<CheckboxInputProps>, 'ToggleInput'> {
   /**
@@ -66,26 +65,26 @@ function CheckboxInput(props: CheckboxInputProps) {
     disabled && colors.palette.neutral400,
     status === 'error' && colors.errorBackground,
     colors.palette.neutral200,
-  ].filter(Boolean)[0]
+  ].filter(Boolean)[0] as any
 
   const outerBorderColor = [
     disabled && colors.palette.neutral400,
     status === 'error' && colors.error,
     !on && colors.palette.neutral800,
     colors.palette.secondary500,
-  ].filter(Boolean)[0]
+  ].filter(Boolean)[0] as any
 
   const onBackgroundColor = [
     disabled && colors.transparent,
     status === 'error' && colors.errorBackground,
     colors.palette.secondary500,
-  ].filter(Boolean)[0]
+  ].filter(Boolean)[0] as any
 
   const iconTintColor = [
     disabled && colors.palette.neutral600,
     status === 'error' && colors.error,
     colors.palette.accent100,
-  ].filter(Boolean)[0]
+  ].filter(Boolean)[0] as any
 
   return (
     <View

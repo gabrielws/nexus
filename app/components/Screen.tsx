@@ -1,8 +1,8 @@
-/* eslint-disable react/prefer-destructuring-assignment */
-/* eslint-disable ts/no-use-before-define */
-/* eslint-disable react-refresh/only-export-components */
+import { useScrollToTop } from '@react-navigation/native'
 import type { StatusBarProps, StatusBarStyle } from 'expo-status-bar'
+import { StatusBar } from 'expo-status-bar'
 import type { ReactNode } from 'react'
+import { useRef, useState } from 'react'
 import type {
   KeyboardAvoidingViewProps,
   LayoutChangeEvent,
@@ -11,19 +11,16 @@ import type {
   StyleProp,
   ViewStyle,
 } from 'react-native'
-import type { ExtendedEdge } from '../utils/useSafeAreaInsetsStyle'
-import { useAppTheme } from '@/utils/useAppTheme'
-import { useScrollToTop } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
-import { useRef, useState } from 'react'
 import {
   KeyboardAvoidingView,
   Platform,
   View,
 } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
 import { $styles } from '../theme'
+import type { ExtendedEdge } from '../utils/useSafeAreaInsetsStyle'
 import { useSafeAreaInsetsStyle } from '../utils/useSafeAreaInsetsStyle'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller'
+import { useAppTheme } from '@/utils/useAppTheme'
 
 export const DEFAULT_BOTTOM_OFFSET = 50
 
@@ -265,6 +262,7 @@ export function Screen(props: ScreenProps) {
   } = props
 
   const $containerInsets = useSafeAreaInsetsStyle(safeAreaEdges)
+  const { preset } = props
 
   return (
     <View
@@ -285,7 +283,7 @@ export function Screen(props: ScreenProps) {
         {...KeyboardAvoidingViewProps}
         style={[$styles.flex1, KeyboardAvoidingViewProps?.style]}
       >
-        {isNonScrolling(props.preset)
+        {isNonScrolling(preset)
           ? (
               <ScreenWithoutScrolling {...props} />
             )

@@ -1,5 +1,3 @@
-/* eslint-disable react/prefer-destructuring-assignment */
-/* eslint-disable react-refresh/only-export-components */
 import type { ImageProps, ImageURISource } from 'react-native'
 import { useLayoutEffect, useState } from 'react'
 import { Image, Platform } from 'react-native'
@@ -13,6 +11,9 @@ export interface AutoImageProps extends ImageProps {
    * How tall should the image be?
    */
   maxHeight?: number
+  headers?: {
+    [key: string]: string
+  }
 }
 
 /**
@@ -29,6 +30,9 @@ export interface AutoImageProps extends ImageProps {
  */
 export function useAutoImage(
   remoteUri: string,
+  headers?: {
+    [key: string]: string
+  },
   dimensions?: [maxWidth?: number, maxHeight?: number],
 ): [width: number, height: number] {
   const [[remoteWidth, remoteHeight], setRemoteImageDimensions] = useState([0, 0])
@@ -39,8 +43,13 @@ export function useAutoImage(
     if (!remoteUri)
       return
 
-    Image.getSize(remoteUri, (w, h) => setRemoteImageDimensions([w, h]))
-  }, [remoteUri])
+    if (!headers) {
+      Image.getSize(remoteUri, (w, h) => setRemoteImageDimensions([w, h]))
+    }
+    else {
+      Image.getSizeWithHeaders(remoteUri, headers, (w, h) => setRemoteImageDimensions([w, h]))
+    }
+  }, [remoteUri, headers])
 
   if (Number.isNaN(remoteAspectRatio))
     return [0, 0]
@@ -69,12 +78,14 @@ export function useAutoImage(
 export function AutoImage(props: AutoImageProps) {
   const { maxWidth, maxHeight, ...ImageProps } = props
   const source = props.source as ImageURISource
+  const headers = source?.headers
 
   const [width, height] = useAutoImage(
     Platform.select({
       web: (source?.uri as string) ?? (source as string),
       default: source?.uri as string,
     }),
+    headers,
     [maxWidth, maxHeight],
   )
 

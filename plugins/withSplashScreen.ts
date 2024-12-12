@@ -1,4 +1,3 @@
-/* eslint-disable ts/no-use-before-define */
 import type { ConfigPlugin } from 'expo/config-plugins'
 import { AndroidConfig, withAndroidStyles, withStringsXml } from 'expo/config-plugins'
 

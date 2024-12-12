@@ -1,4 +1,4 @@
-const en = {
+const pt = {
   common: {
     ok: 'OK!',
     cancel: 'Cancel',
@@ -25,5 +25,5 @@ const en = {
   },
 }
 
-export default en
-export type Translations = typeof en
+export default pt
+export type Translations = typeof pt

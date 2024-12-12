@@ -1,8 +1,5 @@
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable react/prefer-destructuring-assignment */
-/* eslint-disable ts/no-use-before-define */
-import type { ThemedStyle } from '@/theme'
 import type { ComponentType, FC } from 'react'
+import { useMemo } from 'react'
 import type {
   GestureResponderEvent,
   ImageStyle,
@@ -14,15 +11,15 @@ import type {
   ViewProps,
   ViewStyle,
 } from 'react-native'
-import type { TextProps } from '../Text'
-import { useAppTheme } from '@/utils/useAppTheme'
-import { useMemo } from 'react'
 import {
   TouchableOpacity,
   View,
 } from 'react-native'
 import { $styles } from '../../theme'
+import type { TextProps } from '../Text'
 import { Text } from '../Text'
+import { useAppTheme } from '@/utils/useAppTheme'
+import type { ThemedStyle } from '@/theme'
 
 export interface ToggleProps<T> extends Omit<TouchableOpacityProps, 'style'> {
   /**

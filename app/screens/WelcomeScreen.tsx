@@ -1,37 +1,32 @@
-/* eslint-disable perfectionist/sort-imports */
-/* eslint-disable ts/no-use-before-define */
-/* eslint-disable ts/no-require-imports */
-import type { ThemedStyle } from '@/theme'
+import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
-import type { AppStackScreenProps } from '../navigators'
-import { Button, Screen, Text } from '@/components'
-import { useAppTheme } from '@/utils/useAppTheme'
-import { useAuth } from 'app/services/auth/useAuth'
-import { observer } from 'mobx-react-lite'
 import { Image, View } from 'react-native'
+import { Screen, Text } from '@/components'
 import { isRTL } from '../i18n'
+import type { AppStackScreenProps } from '../navigators'
+import { $styles, type ThemedStyle } from '@/theme'
 import { useSafeAreaInsetsStyle } from '../utils/useSafeAreaInsetsStyle'
+import { useAppTheme } from '@/utils/useAppTheme'
 
 const welcomeLogo = require('../../assets/images/logo.png')
 const welcomeFace = require('../../assets/images/welcome-face.png')
 
-interface HomeProps extends AppStackScreenProps<'Home'> {}
+interface WelcomeScreenProps extends AppStackScreenProps<'Welcome'> {}
 
-export const HomeScreen: FC<HomeProps> = observer(() => {
+export const WelcomeScreen: FC<WelcomeScreenProps> = observer(() => {
   const { themed, theme } = useAppTheme()
-  const { signOut } = useAuth()
 
   const $bottomContainerInsets = useSafeAreaInsetsStyle(['bottom'])
 
   return (
-    <Screen preset="fixed">
+    <Screen preset="fixed" contentContainerStyle={$styles.flex1}>
       <View style={themed($topContainer)}>
         <Image style={themed($welcomeLogo)} source={welcomeLogo} resizeMode="contain" />
         <Text
           testID="welcome-heading"
           style={themed($welcomeHeading)}
-          text="Congratulations 🎉 You're signed in!"
+          tx="welcomeScreen:readyForLaunch"
           preset="heading"
         />
         <Text tx="welcomeScreen:exciting" preset="subheading" />
@@ -44,7 +39,7 @@ export const HomeScreen: FC<HomeProps> = observer(() => {
       </View>
 
       <View style={themed([$bottomContainer, $bottomContainerInsets])}>
-        <Button onPress={signOut}>Sign Out</Button>
+        <Text tx="welcomeScreen:postscript" size="md" />
       </View>
     </Screen>
   )

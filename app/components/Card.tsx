@@ -1,5 +1,3 @@
-/* eslint-disable react/prefer-destructuring-assignment */
-/* eslint-disable ts/no-use-before-define */
 import type { ThemedStyle, ThemedStyleArray } from '@/theme'
 import type { ComponentType, ReactElement } from 'react'
 import type {

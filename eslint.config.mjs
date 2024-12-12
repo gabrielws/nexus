@@ -19,5 +19,12 @@ export default antfu({
     '.eslintignore',
     '**/.eslintignore/**',
   ],
+  rules: {
+    'ts/no-require-imports': 'off',
+    'ts/no-use-before-define': 'off',
+    'perfectionist/sort-imports': 'off',
+    'react-refresh/only-export-components': 'off',
+    'no-console': 'off',
+  },
   react: true,
 })

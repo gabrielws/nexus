@@ -1,6 +1,3 @@
-/* eslint-disable ts/no-use-before-define */
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable ts/no-require-imports */
 import type { ComponentType } from 'react'
 import type {
   ImageStyle,
@@ -9,12 +6,12 @@ import type {
   ViewProps,
   ViewStyle,
 } from 'react-native'
-import { useAppTheme } from '@/utils/useAppTheme'
 import {
   Image,
   TouchableOpacity,
   View,
 } from 'react-native'
+import { useAppTheme } from '@/utils/useAppTheme'
 
 export type IconTypes = keyof typeof iconRegistry
 

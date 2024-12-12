@@ -1,7 +1,3 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import type { ComponentProps } from 'react'
-import * as Screens from '@/screens'
-import { useAppTheme, useThemeProvider } from '@/utils/useAppTheme'
 /**
  * The app navigator (formerly "AppNavigator" and "MainNavigator") is used for the primary
  * navigation flows of your app.
@@ -9,11 +5,17 @@ import { useAppTheme, useThemeProvider } from '@/utils/useAppTheme'
  * and a "main" flow which the user will use once logged in.
  */
 import { NavigationContainer } from '@react-navigation/native'
+import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { useAuth } from 'app/services/auth/useAuth'
 import { observer } from 'mobx-react-lite'
+import * as Screens from '@/screens'
 import Config from '../config'
 import { navigationRef, useBackButtonHandler } from './navigationUtilities'
+import { useAppTheme, useThemeProvider } from '@/utils/useAppTheme'
+import type { ComponentProps } from 'react'
+import { useAuth } from '@/services/auth/useAuth'
+import React from 'react'
+import { MainNavigator } from './MainNavigator'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -29,10 +31,15 @@ import { navigationRef, useBackButtonHandler } from './navigationUtilities'
  *   https://reactnavigation.org/docs/typescript/#organizing-types
  */
 export interface AppStackParamList {
-  Home: undefined
-  SignIn: undefined
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
   [key: string]: undefined | object
+  Map: undefined
+  Welcome: undefined
+  Settings: undefined
+  Scoreboard: undefined
+  Rewards: undefined
+  SignIn: undefined
+  Main: undefined
+  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -66,19 +73,21 @@ const AppStack = observer(() => {
         },
       }}
     >
-      {isAuthenticated ? (
-        <>
-          {/** 🔥 Your screens go here */}
-          <Stack.Screen name="Home" component={Screens.HomeScreen} />
-          {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
-        </>
-      ) : (
-        <Stack.Screen
-          name="SignIn"
-          component={Screens.SignInScreen}
-          options={{ animationTypeForReplace: 'pop' }}
-        />
-      )}
+      {isAuthenticated
+        ? (
+            <>
+              <Stack.Screen name="Main" component={MainNavigator} />
+              {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+            </>
+          )
+        : (
+            <Stack.Screen
+              name="SignIn"
+              component={Screens.SignInScreen}
+              options={{ animationTypeForReplace: 'pop' }}
+            />
+          )}
+
     </Stack.Navigator>
   )
 })
@@ -93,7 +102,7 @@ export const AppNavigator = observer((props: NavigationProps) => {
 
   return (
     <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>
-      <NavigationContainer ref={navigationRef} theme={navigationTheme} {...props}>
+      <NavigationContainer ref={navigationRef as any} theme={navigationTheme} {...props}>
         <AppStack />
       </NavigationContainer>
     </ThemeProvider>

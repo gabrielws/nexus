@@ -7,14 +7,12 @@
       "extends": "production",
       "distribution": "internal",
       "android": {
-        "gradleCommand": ":app:assembleDebug",
-        "image": "latest"
+        "gradleCommand": ":app:assembleDebug"
       },
       "ios": {
         "buildConfiguration": "Debug",
         "simulator": true
-      },
-      "channel": "development"
+      }
     },
     "development:device": {
       "extends": "development",
@@ -22,31 +20,19 @@
       "ios": {
         "buildConfiguration": "Debug",
         "simulator": false
-      },
-      "channel": "development:device"
+      }
     },
     "preview": {
       "extends": "production",
       "distribution": "internal",
-      "ios": {
-        "simulator": true
-      },
-      "android": {
-        "buildType": "apk",
-        "image": "latest"
-      },
-      "channel": "preview"
+      "ios": { "simulator": true },
+      "android": { "buildType": "apk" }
     },
     "preview:device": {
       "extends": "preview",
-      "ios": {
-        "simulator": false
-      },
-      "channel": "preview:device"
+      "ios": { "simulator": false }
     },
-    "production": {
-      "channel": "production"
-    }
+    "production": {}
   },
   "submit": {
     "production": {}

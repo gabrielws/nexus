@@ -3,10 +3,7 @@
   "compilerOptions": {
     "target": "esnext",
     "jsx": "react-native",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "experimentalDecorators": true,
     "baseUrl": ".",
     "module": "es2015",
@@ -16,10 +13,7 @@
       "assets/*": ["./assets/*"]
     },
     "resolveJsonModule": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ],
+    "typeRoots": ["./node_modules/@types", "./types"],
     "allowJs": false,
     "strict": true,
     "noImplicitAny": true,
@@ -34,12 +28,6 @@
       "module": "commonjs"
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "test/**/*"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "test/**/*"]
 }
