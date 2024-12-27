@@ -5,6 +5,7 @@ export interface ConfigBaseProps {
   exitRoutes: string[]
   supabaseUrl: string
   supabaseAnonKey: string
+  mapboxToken: string
 }
 
 export type PersistNavigationConfig = ConfigBaseProps['persistNavigation']
@@ -26,6 +27,7 @@ const BaseConfig: ConfigBaseProps = {
   exitRoutes: ['Welcome'],
   supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL!,
   supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
+  mapboxToken: process.env.EXPO_PUBLIC_MAPBOX_TOKEN!,
 }
 
 export default BaseConfig

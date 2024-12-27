@@ -1,14 +1,15 @@
 import type { FC } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Alert, type ViewStyle } from 'react-native'
+import type { ViewStyle } from 'react-native'
 import type { AppStackScreenProps } from '@/navigators'
-import { Screen, Text } from '@/components'
+import { Screen } from '@/components'
 import MapboxGL from '@rnmapbox/maps'
 import { useEffect, useState } from 'react'
+import Config from 'app/config'
 
 interface MapScreenProps extends AppStackScreenProps<'Map'> {}
 
-MapboxGL.setAccessToken('pk.eyJ1IjoidWVlZ2FicmllbCIsImEiOiJjbTJ3cnM3c3AwOXZlMmpxMndyZHBoMWRmIn0.1SvRf9_dODBqIK2iPrfceg')
+MapboxGL.setAccessToken(Config.mapboxToken)
 MapboxGL.setTelemetryEnabled(false)
 
 export const MapScreen: FC<MapScreenProps> = observer(() => {
