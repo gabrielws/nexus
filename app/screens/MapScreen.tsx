@@ -4,9 +4,7 @@ import { Alert, type ViewStyle } from 'react-native'
 import type { AppStackScreenProps } from '@/navigators'
 import { Screen, Text } from '@/components'
 import MapboxGL from '@rnmapbox/maps'
-import { useEffect } from 'react'
-import * as ExpoLocation from 'expo-location'
-import { MaterialIcons } from '@expo/vector-icons'
+import { useEffect, useState } from 'react'
 
 interface MapScreenProps extends AppStackScreenProps<'Map'> {}
 
@@ -14,25 +12,19 @@ MapboxGL.setAccessToken('pk.eyJ1IjoidWVlZ2FicmllbCIsImEiOiJjbTJ3cnM3c3AwOXZlMmpx
 MapboxGL.setTelemetryEnabled(false)
 
 export const MapScreen: FC<MapScreenProps> = observer(() => {
+  const [isMapReady, setIsMapReady] = useState(false)
+  const [_mapLoaded, setMapLoaded] = useState(false)
+
+  const initialCoords = {
+    centerCoordinate: [-46.6388, -23.5489], // São Paulo
+    zoomLevel: 10,
+    pitch: 0,
+    heading: 0,
+  }
+
   useEffect(() => {
-    const requestPermissions = async () => {
-      try {
-        const { status } = await ExpoLocation.requestForegroundPermissionsAsync()
-        if (status === 'granted') {
-          MapboxGL.locationManager.start()
-        }
-        else {
-          Alert.alert('Permissão necessária', 'Precisamos de acesso à sua localização para mostrar no mapa')
-        }
-      }
-      catch (error) {
-        console.error('Erro ao solicitar permissões:', error)
-      }
-    }
-
-    requestPermissions()
-
-    return (): void => {
+    MapboxGL.locationManager.start()
+    return () => {
       MapboxGL.locationManager.stop()
     }
   }, [])
@@ -40,34 +32,43 @@ export const MapScreen: FC<MapScreenProps> = observer(() => {
   return (
     <Screen
       contentContainerStyle={$contentContainer}
+      safeAreaEdges={['top']}
     >
       <MapboxGL.MapView
-        styleURL="mapbox://styles/mapbox/standard-satellite"
+        styleURL="mapbox://styles/mapbox/standard"
         style={$mapStyle}
         logoEnabled={false}
-        surfaceView={false}
+        compassEnabled={false}
+        scaleBarEnabled={false}
+        surfaceView
         pitchEnabled
         rotateEnabled
-        attributionEnabled={false}
 
+        attributionEnabled={false}
+        onDidFinishLoadingMap={() => {
+          setIsMapReady(true)
+          setMapLoaded(true)
+        }}
       >
-        <MapboxGL.VectorSource
-          id="source"
-          url="mapbox://ueegabriel.cm56bc04u3g1l1oo1hqsb02hl-1nnk7"
-        >
-          <MapboxGL.FillExtrusionLayer
-            id="buildings"
-            sourceLayerID="IF"
-            minZoomLevel={15}
-            maxZoomLevel={22}
-            style={{
-              fillExtrusionColor: '#fff',
-              fillExtrusionOpacity: 0.4,
-              fillExtrusionHeight: 0, // altura em metros
-              fillExtrusionBase: 0, // altura da base
-            }}
-          />
-          {/* <MapboxGL.SymbolLayer
+        {isMapReady && (
+          <>
+            <MapboxGL.VectorSource
+              id="source"
+              url="mapbox://ueegabriel.cm56bc04u3g1l1oo1hqsb02hl-1nnk7"
+            >
+              <MapboxGL.FillExtrusionLayer
+                id="buildings"
+                sourceLayerID="IF"
+                minZoomLevel={15}
+                maxZoomLevel={22}
+                style={{
+                  fillExtrusionColor: '#fff',
+                  fillExtrusionOpacity: 0,
+                  fillExtrusionHeight: 0, // altura em metros
+                  fillExtrusionBase: 0, // altura da base
+                }}
+              />
+              {/* <MapboxGL.SymbolLayer
             id="building-labels"
             sourceLayerID="IF"
             style={{
@@ -79,16 +80,18 @@ export const MapScreen: FC<MapScreenProps> = observer(() => {
               textColor: 'orange',
             }}
           /> */}
-        </MapboxGL.VectorSource>
+            </MapboxGL.VectorSource>
 
-        <MapboxGL.Camera
-          followZoomLevel={18}
-          zoomLevel={18}
-          followPitch={50}
-          followUserLocation
-        />
-        <MapboxGL.UserLocation />
-
+            <MapboxGL.Camera
+              followZoomLevel={18}
+              zoomLevel={18}
+              defaultSettings={initialCoords}
+              followPitch={50}
+              followUserLocation
+            />
+            <MapboxGL.UserLocation />
+          </>
+        )}
       </MapboxGL.MapView>
     </Screen>
   )

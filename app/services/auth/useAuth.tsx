@@ -18,6 +18,7 @@ import { supabase } from './supabase'
 interface AuthState {
   isAuthenticated: boolean
   token?: Session['access_token']
+  isLoading: boolean
 }
 
 interface SignInProps {
@@ -39,6 +40,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   token: undefined,
+  isLoading: true,
   signIn: () => new Promise(() => ({})),
   signUp: () => new Promise(() => ({})),
   signOut: () => undefined,
@@ -58,8 +60,14 @@ export function useAuth() {
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [token, setToken] = useState<AuthState['token']>(undefined)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setToken(session?.access_token)
+      setIsLoading(false)
+    })
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
@@ -75,6 +83,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         default:
         // no-op
       }
+      setIsLoading(false)
     })
 
     return () => {
@@ -124,6 +133,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       value={{
         isAuthenticated: !!token,
         token,
+        isLoading,
         signIn,
         signUp,
         signOut,

@@ -1,6 +1,6 @@
 import type { ImageProps, ImageURISource } from 'react-native'
 import { useLayoutEffect, useState } from 'react'
-import { Image, Platform } from 'react-native'
+import { Image, PixelRatio, Platform } from 'react-native'
 
 export interface AutoImageProps extends ImageProps {
   /**
@@ -56,13 +56,16 @@ export function useAutoImage(
 
   if (maxWidth && maxHeight) {
     const aspectRatio = Math.min(maxWidth / remoteWidth, maxHeight / remoteHeight)
-    return [remoteWidth * aspectRatio, remoteHeight * aspectRatio]
+    return [
+      PixelRatio.roundToNearestPixel(remoteWidth * aspectRatio),
+      PixelRatio.roundToNearestPixel(remoteHeight * aspectRatio),
+    ]
   }
   else if (maxWidth) {
-    return [maxWidth, maxWidth / remoteAspectRatio]
+    return [maxWidth, PixelRatio.roundToNearestPixel(maxWidth / remoteAspectRatio)]
   }
   else if (maxHeight) {
-    return [maxHeight * remoteAspectRatio, maxHeight]
+    return [PixelRatio.roundToNearestPixel(maxHeight * remoteAspectRatio), maxHeight]
   }
   else {
     return [remoteWidth, remoteHeight]

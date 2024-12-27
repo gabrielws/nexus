@@ -13,9 +13,11 @@ import Config from '../config'
 import { navigationRef, useBackButtonHandler } from './navigationUtilities'
 import { useAppTheme, useThemeProvider } from '@/utils/useAppTheme'
 import type { ComponentProps } from 'react'
+import { useStores } from '../models'
 import { useAuth } from '@/services/auth/useAuth'
 import React from 'react'
 import { MainNavigator } from './MainNavigator'
+import { ActivityIndicator, View } from 'react-native'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -39,6 +41,7 @@ export interface AppStackParamList {
   Rewards: undefined
   SignIn: undefined
   Main: undefined
+  Permission: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -47,6 +50,14 @@ export interface AppStackParamList {
  * is pressed while in that screen. Only affects Android.
  */
 const exitRoutes = Config.exitRoutes
+
+function LoadingScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size="large" />
+    </View>
+  )
+}
 
 export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStackScreenProps<
   AppStackParamList,
@@ -57,11 +68,16 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
 const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(() => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth()
+  const { locationStore } = useStores()
 
   const {
     theme: { colors },
   } = useAppTheme()
+
+  if (isLoading) {
+    return <LoadingScreen />
+  }
 
   return (
     <Stack.Navigator
@@ -75,10 +91,16 @@ const AppStack = observer(() => {
     >
       {isAuthenticated
         ? (
-            <>
-              <Stack.Screen name="Main" component={MainNavigator} />
-              {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
-            </>
+            locationStore.hasLocationPermission
+              ? (
+                  <>
+                    <Stack.Screen name="Main" component={MainNavigator} />
+                    {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+                  </>
+                )
+              : (
+                  <Stack.Screen name="Permission" component={Screens.PermissionScreen} />
+                )
           )
         : (
             <Stack.Screen
@@ -87,7 +109,6 @@ const AppStack = observer(() => {
               options={{ animationTypeForReplace: 'pop' }}
             />
           )}
-
     </Stack.Navigator>
   )
 })

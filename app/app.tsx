@@ -32,29 +32,13 @@ import Config from './config'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { loadDateFnsLocale } from './utils/formatDate'
 import { AuthProvider } from './services/auth/useAuth'
+import * as ExpoLocation from 'expo-location'
+import { Alert } from 'react-native'
 
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
 // Web linking configuration
 const prefix = Linking.createURL('/')
-const config = {
-  screens: {
-    Login: {
-      path: '',
-    },
-    Welcome: 'welcome',
-    Demo: {
-      screens: {
-        DemoShowroom: {
-          path: 'showroom/:queryIndex?/:itemIndex?',
-        },
-        DemoDebug: 'debug',
-        DemoPodcastList: 'podcast',
-        DemoCommunity: 'community',
-      },
-    },
-  },
-}
 
 interface AppProps {
   hideSplashScreen: () => Promise<void>
@@ -75,6 +59,33 @@ function App(props: AppProps) {
 
   const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad)
   const [isI18nInitialized, setIsI18nInitialized] = useState(false)
+  const [isNavigationReady, setIsNavigationReady] = useState(false)
+  const { rehydrated } = useInitialRootStore(() => {})
+
+  const appIsReady
+  = rehydrated
+  && isNavigationStateRestored
+  && isI18nInitialized
+  && (areFontsLoaded || !!fontLoadError)
+  && isNavigationReady
+
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        await Promise.all([
+          new Promise(resolve => setTimeout(resolve, 100)),
+        ])
+      }
+      catch (e) {
+        console.warn(e)
+      }
+      finally {
+        setIsNavigationReady(true)
+      }
+    }
+
+    prepare()
+  }, [])
 
   useEffect(() => {
     initI18n()
@@ -82,15 +93,13 @@ function App(props: AppProps) {
       .then(() => loadDateFnsLocale())
   }, [])
 
-  const { rehydrated } = useInitialRootStore(() => {
-    // This runs after the root store has been initialized and rehydrated.
-
-    // If your initialization scripts run very fast, it's good to show the splash screen for just a bit longer to prevent flicker.
-    // Slightly delaying splash screen hiding for better UX; can be customized or removed as needed,
-    // Note: (vanilla Android) The splash-screen will not appear if you launch your app via the terminal or Android Studio. Kill the app and launch it normally by tapping on the launcher icon. https://stackoverflow.com/a/69831106
-    // Note: (vanilla iOS) You might notice the splash-screen logo change size. This happens in debug/development mode. Try building the app for release.
-    setTimeout(hideSplashScreen, 500)
-  })
+  useEffect(() => {
+    if (appIsReady) {
+      setTimeout(() => {
+        hideSplashScreen()
+      }, 200)
+    }
+  }, [appIsReady, hideSplashScreen])
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
@@ -98,18 +107,12 @@ function App(props: AppProps) {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (
-    !rehydrated
-    || !isNavigationStateRestored
-    || !isI18nInitialized
-    || (!areFontsLoaded && !fontLoadError)
-  ) {
+  if (!appIsReady) {
     return null
   }
 
   const linking = {
     prefixes: [prefix],
-    config,
   }
 
   // otherwise, we're ready to render the app

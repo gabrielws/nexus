@@ -1,5 +1,6 @@
 export * from './ErrorScreen/ErrorBoundary'
 export * from './MapScreen'
+export * from './PermissionScreen'
 export * from './RewardsScreen'
 export * from './ScoreboardScreen'
 export * from './SettingsScreen'

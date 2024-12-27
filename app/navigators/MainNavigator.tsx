@@ -1,14 +1,10 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as Screens from '@/screens'
 import { useAppTheme } from '@/utils/useAppTheme'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { ThemedStyle } from '@/theme'
-import type { CompositeScreenProps } from '@react-navigation/native'
-import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import type { AppStackParamList, AppStackScreenProps } from './AppNavigator'
+import { createBottomTabNavigator, SceneStyleInterpolators, TransitionSpecs } from '@react-navigation/bottom-tabs'
 import type { TextStyle, ViewStyle } from 'react-native'
-import { translate } from '../i18n'
+
 import { Icon } from '../components'
 import Feather from '@expo/vector-icons/Feather'
 
@@ -19,13 +15,6 @@ export interface MainNavigatorParamList {
   Rewards: undefined
   Settings: undefined
 }
-
-// export type MainNavigatorScreenProps<T extends keyof MainNavigatorParamList> = CompositeScreenProps<
-//   BottomTabScreenProps<MainNavigatorParamList, T>,
-//   AppStackScreenProps<keyof AppStackParamList>
-// >
-
-// const Stack = createNativeStackNavigator<MainNavigatorParamList>()
 
 const Tab = createBottomTabNavigator<MainNavigatorParamList>()
 
@@ -47,12 +36,15 @@ export function MainNavigator() {
         tabBarLabelStyle: themed($tabBarLabel),
         tabBarItemStyle: themed($tabBarItem),
       }}
+      backBehavior="initialRoute"
     >
       <Tab.Screen
         name="Map"
         component={Screens.MapScreen}
         options={{
           tabBarLabel: 'Map',
+          transitionSpec: TransitionSpecs.ShiftSpec,
+          sceneStyleInterpolator: SceneStyleInterpolators.forShift,
           tabBarIcon: ({ focused }) => (
             <Feather name="map" size={24} color={focused ? colors.tint : colors.tintInactive} />
           ),
@@ -64,6 +56,8 @@ export function MainNavigator() {
         component={Screens.RewardsScreen}
         options={{
           tabBarLabel: 'Rewards',
+          transitionSpec: TransitionSpecs.ShiftSpec,
+          sceneStyleInterpolator: SceneStyleInterpolators.forShift,
           tabBarIcon: ({ focused }) => (
             <Icon icon="bell" color={focused ? colors.tint : colors.tintInactive} size={24} />
           ),
@@ -75,6 +69,8 @@ export function MainNavigator() {
         component={Screens.ScoreboardScreen}
         options={{
           tabBarLabel: 'Scoreboard',
+          transitionSpec: TransitionSpecs.ShiftSpec,
+          sceneStyleInterpolator: SceneStyleInterpolators.forShift,
           tabBarIcon: ({ focused }) => (
             <Icon icon="view" color={focused ? colors.tint : colors.tintInactive} size={24} />
           ),
@@ -86,6 +82,8 @@ export function MainNavigator() {
         component={Screens.SettingsScreen}
         options={{
           tabBarLabel: 'Settings',
+          transitionSpec: TransitionSpecs.ShiftSpec,
+          sceneStyleInterpolator: SceneStyleInterpolators.forShift,
           tabBarIcon: ({ focused }) => (
             <Icon icon="settings" color={focused ? colors.tint : colors.tintInactive} size={24} />
           ),

@@ -1,19 +1,16 @@
-import { FC } from "react"
-import { observer } from "mobx-react-lite" 
-import { ViewStyle } from "react-native"
-import { AppStackScreenProps } from "@/navigators"
-import { Screen, Text } from "@/components"
+import type { FC } from 'react'
+import { observer } from 'mobx-react-lite'
+import type { ViewStyle } from 'react-native'
+import type { AppStackScreenProps } from '@/navigators'
+import { Screen, Text } from '@/components'
 // import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "@/models" 
+// import { useStores } from "@/models"
 
-interface ScoreboardScreenProps extends AppStackScreenProps<"Scoreboard"> {}
+interface ScoreboardScreenProps extends AppStackScreenProps<'Scoreboard'> {}
 
-
-export const ScoreboardScreen: FC<ScoreboardScreenProps> = observer(function ScoreboardScreen() {
-  
+export const ScoreboardScreen: FC<ScoreboardScreenProps> = observer(() => {
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
-  
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
@@ -22,7 +19,6 @@ export const ScoreboardScreen: FC<ScoreboardScreenProps> = observer(function Sco
       <Text text="scoreboard" />
     </Screen>
   )
-
 })
 
 const $root: ViewStyle = {
