@@ -21,7 +21,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app-icon-android-adaptive-foreground.png",
         "backgroundImage": "./assets/images/app-icon-android-adaptive-background.png"
-      }
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "ios": {
       "icon": "./assets/images/app-icon-ios.png",
@@ -42,6 +46,19 @@
           "imageWidth": 300,
           "resizeMode": "contain",
           "backgroundColor": "#191015"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Show current location on map."
+        }
+      ],
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsVersion": "11.0.0",
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoidWVlZ2FicmllbCIsImEiOiJjbTR2YnFxZWowMTNpMmtvcHdhY2w3MXQ4In0.OV8m1AD-TVIEKBgUJ5JBlg"
         }
       ]
     ],
