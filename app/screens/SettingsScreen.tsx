@@ -3,15 +3,17 @@ import type { FC } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
+import { LayoutAnimation, useColorScheme, View } from 'react-native'
 import type { AppStackScreenProps } from '@/navigators'
 import type { ThemedStyle } from '@/theme'
 import { $styles } from '../theme'
-import { LayoutAnimation, Platform, useColorScheme, View } from 'react-native'
+
 import type { SwitchToggleProps } from '../components'
-import { Button, Icon, ListItem, Screen, Switch, Text } from '../components'
+import { Button, Icon, Screen, Switch, Text } from '../components'
 import { isRTL } from '../i18n'
 import { useAppTheme } from '@/utils/useAppTheme'
 import { useAuth } from '@/services/auth/useAuth'
+import { AnimatedFAB } from 'react-native-paper'
 
 interface SettingsScreenProps extends AppStackScreenProps<'Settings'> {}
 
@@ -52,6 +54,7 @@ export const SettingsScreen: FC<SettingsScreenProps> = observer(() => {
         style={themed($reportBugsLink)}
         text="Report Bugs"
       />
+
       <View style={themed($buttonContainer)}>
         <Button
           text="Sign Out"

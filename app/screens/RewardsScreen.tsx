@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import type { ViewStyle } from 'react-native'
 import type { AppStackScreenProps } from '@/navigators'
 import { Screen, Text } from '@/components'
+import { AnimatedFAB } from 'react-native-paper'
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
 

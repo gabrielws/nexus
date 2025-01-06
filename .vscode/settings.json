@@ -2,6 +2,12 @@
   "i18n-ally.localesPaths": [
     "app/i18n"
   ],
+
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": ".copilot-instructions.md"
+    }
+  ],
   
   // Disable the default formatter, use eslint instead
   "prettier.enable": false,
