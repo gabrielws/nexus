@@ -18,6 +18,8 @@ import { useAuth } from '@/services/auth/useAuth'
 import React from 'react'
 import { MainNavigator } from './MainNavigator'
 import { ActivityIndicator, View } from 'react-native'
+import { LevelUpProvider } from '@/contexts/LevelUpContext'
+import { useLevelUpCheck } from '@/hooks/useLevelUpCheck'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -40,8 +42,10 @@ export interface AppStackParamList {
   Scoreboard: undefined
   Rewards: undefined
   SignIn: undefined
+  SignUp: undefined
   Main: undefined
   Permission: undefined
+  Profile: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -70,6 +74,7 @@ const Stack = createNativeStackNavigator<AppStackParamList>()
 const AppStack = observer(() => {
   const { isAuthenticated, isLoading } = useAuth()
   const { locationStore } = useStores()
+  useLevelUpCheck()
 
   const {
     theme: { colors },
@@ -95,7 +100,16 @@ const AppStack = observer(() => {
               ? (
                   <>
                     <Stack.Screen name="Main" component={MainNavigator} />
-                    {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+                    <Stack.Screen
+                      name="Settings"
+                      component={Screens.SettingsScreen}
+                      options={{
+                        animationTypeForReplace: 'push',
+                        animation: 'ios_from_right',
+                        gestureEnabled: true,
+                        gestureDirection: 'horizontal',
+                      }}
+                    />
                   </>
                 )
               : (
@@ -103,11 +117,18 @@ const AppStack = observer(() => {
                 )
           )
         : (
-            <Stack.Screen
-              name="SignIn"
-              component={Screens.SignInScreen}
-              options={{ animationTypeForReplace: 'pop' }}
-            />
+            <>
+              <Stack.Screen
+                name="SignIn"
+                component={Screens.SignInScreen}
+                options={{ animationTypeForReplace: 'pop' }}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={Screens.SignUpScreen}
+                options={{ animationTypeForReplace: 'push' }}
+              />
+            </>
           )}
     </Stack.Navigator>
   )
@@ -124,7 +145,9 @@ export const AppNavigator = observer((props: NavigationProps) => {
   return (
     <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>
       <NavigationContainer ref={navigationRef as any} theme={navigationTheme} {...props}>
-        <AppStack />
+        <LevelUpProvider>
+          <AppStack />
+        </LevelUpProvider>
       </NavigationContainer>
     </ThemeProvider>
   )

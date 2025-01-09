@@ -8,21 +8,22 @@ import { colors, spacing } from '@/theme'
 import { useSafeAreaInsetsStyle } from '@/utils/useSafeAreaInsetsStyle'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo, useRef, useState } from 'react'
-import { Image, Pressable, View } from 'react-native'
+import { Image, View } from 'react-native'
 import Toast from 'react-native-toast-message'
 
 const logo = require('../../assets/images/logo.png')
 
-interface SignInScreenProps extends AppStackScreenProps<'SignIn'> {}
+interface SignUpScreenProps extends AppStackScreenProps<'SignUp'> {}
 
 interface PasswordRightAccessoryProps extends TextFieldAccessoryProps {
   isPasswordHidden: boolean
   onTogglePasswordHidden: () => void
 }
 
-type ValidationErrors = Map<'Email' | 'Password', string>
+type ValidationErrors = Map<'Email' | 'Password' | 'Username', string>
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/
+const USERNAME_REGEX = /^[\w-]{3,}$/
 
 const PasswordRightAccessory: ComponentType<PasswordRightAccessoryProps> = ({
   style,
@@ -40,25 +41,32 @@ const PasswordRightAccessory: ComponentType<PasswordRightAccessoryProps> = ({
   )
 }
 
-export const SignInScreen: FC<SignInScreenProps> = observer(({ navigation }) => {
+export const SignUpScreen: FC<SignUpScreenProps> = observer(({ navigation }) => {
   const $bottomContainerInsets = useSafeAreaInsetsStyle(['bottom'])
-  const { signIn } = useAuth()
+  const { signUp } = useAuth()
+
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
-  const [isPasswordHidden, setIsPasswordHidden] = useState(true)
   const [password, setPassword] = useState('')
-  const [isSigningIn, setIsSigningIn] = useState(false)
-  const passwordInput = useRef<TextInput>(null)
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true)
+  const [isSigningUp, setIsSigningUp] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(new Map())
+
+  const emailInput = useRef<TextInput>(null)
+  const passwordInput = useRef<TextInput>(null)
 
   const validateForm = () => {
     const errors: ValidationErrors = new Map()
 
+    if (!username || !USERNAME_REGEX.test(username))
+      errors.set('Username', 'Nome de usuário deve conter apenas letras, números, - e _')
+
     if (!email || !EMAIL_REGEX.test(email))
       errors.set('Email', 'Email deve ser válido')
 
-    if (!password)
-      errors.set('Password', 'Senha não pode ser vazia')
+    if (!password || password.length < 6)
+      errors.set('Password', 'Senha deve ter pelo menos 6 caracteres')
 
     return errors
   }
@@ -74,9 +82,9 @@ export const SignInScreen: FC<SignInScreenProps> = observer(({ navigation }) => 
     [isPasswordHidden],
   )
 
-  const onSignIn = async () => {
+  const onSignUp = async () => {
     try {
-      setIsSigningIn(true)
+      setIsSigningUp(true)
       setError(undefined)
       setValidationErrors(new Map())
 
@@ -85,35 +93,30 @@ export const SignInScreen: FC<SignInScreenProps> = observer(({ navigation }) => 
       if (errors.size > 0)
         return
 
-      await signIn({ email, password })
+      await signUp({ email, password, username })
     }
     catch (e: unknown) {
       if (__DEV__)
-        console.error('Erro durante login:', e)
+        console.error('Erro durante cadastro:', e)
 
-      const isAuthError = e && typeof e === 'object' && 'message' in e
-        ? e.message === 'Invalid login credentials'
+      const isUserExists = e && typeof e === 'object' && 'message' in e
+        ? e.message === 'User already registered'
         : false
 
       Toast.show({
         type: 'error',
-        text1: 'Erro ao fazer login',
-        text2: isAuthError
-          ? 'Email ou senha incorretos'
-          : 'Ocorreu um erro ao tentar fazer login',
+        text1: 'Erro ao criar conta',
+        text2: isUserExists
+          ? 'Este email já está cadastrado'
+          : 'Ocorreu um erro ao tentar criar sua conta',
         topOffset: 50,
         visibilityTime: 3000,
         autoHide: true,
       })
     }
     finally {
-      setIsSigningIn(false)
+      setIsSigningUp(false)
     }
-  }
-
-  const onForgotPassword = () => {
-    // Forgot Password Flow
-    console.warn('Forgot Password Flow')
   }
 
   return (
@@ -127,13 +130,27 @@ export const SignInScreen: FC<SignInScreenProps> = observer(({ navigation }) => 
           <View>
             <TextField
               containerStyle={$textField}
+              label="Nome de usuário"
+              autoCapitalize="none"
+              autoCorrect={false}
+              defaultValue={username}
+              onChangeText={setUsername}
+              readOnly={isSigningUp}
+              onSubmitEditing={() => emailInput.current?.focus()}
+              returnKeyType="next"
+              helper={validationErrors.get('Username')}
+              status={validationErrors.get('Username') ? 'error' : undefined}
+            />
+            <TextField
+              ref={emailInput}
+              containerStyle={$textField}
               label="Email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect={false}
               defaultValue={email}
               onChangeText={setEmail}
-              readOnly={isSigningIn}
+              readOnly={isSigningUp}
               onSubmitEditing={() => passwordInput.current?.focus()}
               returnKeyType="next"
               inputMode="email"
@@ -143,38 +160,35 @@ export const SignInScreen: FC<SignInScreenProps> = observer(({ navigation }) => 
             <TextField
               ref={passwordInput}
               containerStyle={$textField}
-              label="Password"
+              label="Senha"
               autoCapitalize="none"
-              autoComplete="current-password"
+              autoComplete="new-password"
               autoCorrect={false}
               defaultValue={password}
-              onSubmitEditing={onSignIn}
+              onSubmitEditing={onSignUp}
               returnKeyType="done"
               secureTextEntry={isPasswordHidden}
               onChangeText={setPassword}
               RightAccessory={PasswordAccessory}
-              readOnly={isSigningIn}
+              readOnly={isSigningUp}
               helper={validationErrors.get('Password')}
               status={validationErrors.get('Password') ? 'error' : undefined}
             />
           </View>
           <View>
             <Button
-              onPress={onSignIn}
-              disabled={isSigningIn}
+              onPress={onSignUp}
+              disabled={isSigningUp}
             >
-              {isSigningIn ? 'Entrando...' : 'Entrar'}
+              {isSigningUp ? 'Criando conta...' : 'Criar conta'}
             </Button>
-            <Pressable style={$forgotPassword} onPress={onForgotPassword} disabled={isSigningIn}>
-              <Text preset="bold">Esqueceu a senha?</Text>
-            </Pressable>
             <Text style={$buttonDivider}>- ou -</Text>
             <Button
               preset="reversed"
-              onPress={() => navigation.navigate('SignUp')}
-              disabled={isSigningIn}
+              onPress={() => navigation.goBack()}
+              disabled={isSigningUp}
             >
-              Criar conta
+              Voltar para login
             </Button>
           </View>
           <View style={$cap} />
@@ -218,10 +232,6 @@ const $cap: ViewStyle = {
 
 const $textField: ViewStyle = {
   marginBottom: spacing.md,
-}
-
-const $forgotPassword: ViewStyle = {
-  marginVertical: spacing.md,
 }
 
 const $buttonDivider: TextStyle = {

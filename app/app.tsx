@@ -31,8 +31,9 @@ import { customFontsToLoad } from './theme'
 import Config from './config'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { loadDateFnsLocale } from './utils/formatDate'
-import { PaperProvider } from 'react-native-paper'
-import { AuthProvider } from './services/auth/useAuth'
+import { XPProvider } from '@/contexts/XPContext'
+import { NavigationContainer } from '@react-navigation/native'
+import { LevelUpProvider } from '@/contexts/LevelUpContext'
 
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
@@ -48,7 +49,7 @@ interface AppProps {
  * @param {AppProps} props - The props for the `App` component.
  * @returns {JSX.Element} The rendered `App` component.
  */
-function App(props: AppProps) {
+export default function App(props: AppProps) {
   const { hideSplashScreen } = props
   const {
     initialNavigationState,
@@ -116,22 +117,18 @@ function App(props: AppProps) {
 
   // otherwise, we're ready to render the app
   return (
-    <AuthProvider>
-      <PaperProvider>
-        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <ErrorBoundary catchErrors={Config.catchErrors}>
-            <KeyboardProvider>
-              <AppNavigator
-                linking={linking}
-                initialState={initialNavigationState}
-                onStateChange={onNavigationStateChange}
-              />
-            </KeyboardProvider>
-          </ErrorBoundary>
-        </SafeAreaProvider>
-      </PaperProvider>
-    </AuthProvider>
+    <ErrorBoundary catchErrors={Config.catchErrors}>
+      <KeyboardProvider>
+        <XPProvider>
+          <LevelUpProvider>
+            <AppNavigator
+              linking={linking}
+              initialState={initialNavigationState}
+              onStateChange={onNavigationStateChange}
+            />
+          </LevelUpProvider>
+        </XPProvider>
+      </KeyboardProvider>
+    </ErrorBoundary>
   )
 }
-
-export default App

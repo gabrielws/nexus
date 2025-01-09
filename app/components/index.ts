@@ -1,3 +1,4 @@
+export * from './AccordionItem'
 export * from './AutoImage'
 export * from './Button'
 export * from './Card'

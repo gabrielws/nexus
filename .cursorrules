@@ -1,0 +1,820 @@
+INSTRUÇÕES E DOCUMENTAÇÃO DO PROJETO NEXUS
+
+1. VISÃO GERAL
+Você é especialista em React Native, TypeScript, Expo e desenvolvimento de aplicativos mobile.
+O projeto Nexus tem como objetivo criar um App Gamificado Comunitário. Neste app, os usuários podem, por meio de um mapa com geolocalização, reportar problemas (ex.: torneira quebrada, poluição, luz queimada, banco quebrado, etc.). O objetivo é incentivar tanto a comunidade quanto autoridades (governo, etc.) a resolverem esses problemas, começando por um estudo de caso aplicado a uma Instituição de Ensino.
+1.1 Funcionalidades-Chave
+1. Mapa Interativo
+o Localização atual do usuário.
+o Possibilidade de inserir novos marcadores de problemas.
+o Visualização de um Sheet com detalhes do problema ao clicar em um marcador.
+2. Gamificação
+o Pontos (XP) por interações (reportar problema, resolver problema, fazer check-in diário, responder feedback, etc.), gerenciados via Supabase.
+o Animação de XP na tela (XPAnimation).
+o Ranking de usuários (Leaderboard).
+o Recompensas e níveis (com streak diário, check-in, badges, etc.).
+3. Abas (Telas)
+o Mapa
+o Recompensas (inclui check-in diário, feedback e informações de níveis)
+o Ranking
+o Perfil
+4. Lógica do Lado do Servidor (Supabase)
+o As funções, triggers e armazenamento de dados de XP e check-in ficam majoritariamente no Supabase (chamadas a partir do app).
+
+2. REGRAS PRINCIPAIS E CONDUTA GERAL
+As regras e diretrizes abaixo são fundamentais para manter a clareza e consistência no desenvolvimento. Siga-as rigorosamente.
+5. Não se desculpe e não agradeça.
+6. Fale de forma humana e direta.
+7. Siga exatamente o que for solicitado; não implemente nada fora do escopo pedido.
+8. Verifique as informações antes de fazer alterações ou responder algo.
+9. Preserve as estruturas de código existentes e a organização do projeto.
+10. Forneça respostas concisas e relevantes.
+11. Siga precisamente a intenção do usuário.
+12. Mantenha o projeto organizado com a estrutura de diretórios e arquivos bem definida.
+13. Use nomes significativos para arquivos, diretórios, funções e variáveis.
+14. Evite acúmulo de arquivos desnecessários.
+15. Sempre use colors.background, colors.border, colors.tint e afins (do tema dinâmico) em vez de colors.palette para manter a compatibilidade com o modo escuro.
+16. Sempre que precisar de algum arquivo, solicite-o explicitamente ao usuário (caso ele não tenha enviado).
+17. A estrutura ideal de cada screen deve ser uma pasta contendo components/, config/, hooks/, index.tsx, etc.
+18. Usar componentes pré-existentes para manter a coesão visual, evitando duplicação de estilos em diferentes locais.
+19. O usuário que reportou um problema não pode resolver o mesmo problema.
+20. Stack do projeto:
+o React Native
+o Expo (com build nativa)
+o TypeScript
+o Boilerplate Ignite
+o React Native Paper (componentes)
+o Ícones: @expo/vector-icons
+o Sheet: @gorhom/bottom-sheet
+o Mapas e localização: @rnmapbox/maps
+o Navegação: React Navigation
+o Autenticação, Storage: @supabase/supabase-js
+o Datas: date-fns
+o ESLint
+
+3. OBJETIVOS E FUNCIONALIDADES DO MVP
+Título do TCC:
+UMA SOLUÇÃO TECNOLÓGICA PARA APOIAR O DESENVOLVIMENTO DE CIDADES E COMUNIDADES SUSTENTÁVEIS: UM ESTUDO DE CASO APLICADO A UMA INSTITUIÇÃO DE ENSINO
+Objetivo Geral:
+Investigar como um aplicativo móvel open-source gamificado pode contribuir para engajar a comunidade na identificação e resolução de problemas sociais e ambientais, promovendo construção de ambientes mais sustentáveis.
+3.1 Objetivo do Projeto
+- Desenvolver uma versão inicial funcional do aplicativo que:
+o Permita aos usuários reportar problemas na instituição educacional.
+o Promova interação colaborativa.
+o Engaje os usuários com elementos básicos de gamificação.
+3.2 Funcionalidades Essenciais
+1. Mapa Interativo
+o Exibir marcadores dos problemas já reportados.
+o Botão para criar novos problemas.
+o Ao clicar em marcador, visualizar detalhes (título, descrição, categoria, imagem).
+2. Reportar Problemas
+o Formulário para título, descrição, categoria, upload/foto obrigatórios.
+o A localização é selecionada no mapa ou gerada pela geolocalização do usuário.
+3. Autenticação de Usuário
+o Login via email/senha (Supabase).
+o Registro e recuperação de senha.
+4. Perfil do Usuário
+o Foto de perfil, nome e estatísticas (XP, nível, streak).
+o Histórico de problemas reportados/resolvidos, comentários, upvotes.
+5. Gamificação
+o Sistema de pontos (XP) para cada ação.
+o Sistema de níveis (ex.: XP para subir de nível).
+o Check-in diário (com streak e bonus) por meio de função no Supabase.
+o Prêmios, badges (próximos níveis e recompensas futuras são ocultos).
+6. Leaderboard (Ranking)
+o Lista dos usuários ordenados por pontuação total.
+o Destaque para o usuário atual (logado).
+o Possibilidade de clicar no perfil de um usuário.
+7. Aba de Recompensas
+o Seção de check-in diário.
+o Seção de feedback (perguntas do Supabase).
+o Seção exibindo níveis atingíveis e badges já conquistadas.
+8. Interação Colaborativa
+o Comentários em problemas.
+o Upvotes em problemas.
+9. Design e Usabilidade
+o Interface amigável.
+o Feedback visual e mensagens de confirmação.
+o Consistência visual e suporte a modo escuro.
+
+4. ESTRUTURA DE PASTAS DO PROJETO
+NEXUS/
+├── .expo/
+├── .vscode/
+├── android/
+├── app/
+│   ├── components/
+│   │   ├── Toggle/
+│   │   ├── AutoImage.tsx
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── CommentsModel.tsx
+│   │   ├── EmptyState.tsx
+│   │   ├── FeedbackCard.tsx
+│   │   ├── FeedbackModal.tsx
+│   │   ├── FeedbackSection.tsx
+│   │   ├── Header.tsx
+│   │   ├── Icon.tsx
+│   │   ├── index.ts
+│   │   ├── levelUpModal.tsx
+│   │   ├── ListItem.tsx
+│   │   ├── ListView.tsx
+│   │   ├── ProblemComments.tsx
+│   │   ├── ProblemUpvotes.tsx
+│   │   ├── Screen.tsx
+│   │   ├── Text.tsx
+│   │   ├── TextField.tsx
+│   │   ├── XPAnimation.tsx
+│   ├── config/
+│   │   ├── categories.ts
+│   │   ├── rewards.ts
+│   │   ├── feedback.ts
+│   │   ├── config.base.ts
+│   │   ├── config.dev.ts
+│   │   ├── config.prod.ts
+│   │   └── index.ts
+│   ├── contexts/
+│   │   ├── LevelUpContext.tsx
+│   │   └── XPContext.tsx
+│   ├── devtools/
+│   ├── hooks/
+│   │   ├── useProblems.ts
+│   │   └── useProfile.tsx
+│   ├── i18n/
+│   ├── models/
+│   │   ├── helpers/
+│   │   │   ├── getRootStore.ts
+│   │   │   ├── setupRootStore.ts
+│   │   │   ├── useStores.ts
+│   │   │   └── withSetPropAction.ts
+│   │   ├── index.ts
+│   │   ├── LocationStore.tsx
+│   │   └── RootStore.ts
+│   ├── navigators/
+│   │   ├── AppNavigator.tsx
+│   │   ├── index.ts
+│   │   ├── MainNavigator.tsx
+│   │   └── navigationUtilities.ts
+│   ├── screens/
+│   │   ├── _tests_/
+│   │   ├── ErrorScreen/
+│   │   ├── Map/
+│   │   │   ├── hooks/
+│   │   │   ├── components/
+│   │   │   ├── config/
+│   │   │   │   ├── mapStyles.ts
+│   │   │   │   └── mapDefaults.ts
+│   │   │   ├── constants.ts
+│   │   │   ├── index.tsx
+│   │   │   └── types.ts
+│   │   ├── ProfileScreen/
+│   │   │   ├── BadgeItem.tsx
+│   │   │   ├── FeedbackCard.tsx
+│   │   │   └── index.tsx
+│   │   ├── PermissionScreen.tsx
+│   │   ├── ProfileScreen.tsx
+│   │   ├── RewardsScreen.tsx
+│   │   ├── RewardsScreen/
+│   │   │   └── LevelItem.tsx
+│   │   ├── ScoreboardScreen.tsx
+│   │   ├── SettingsScreen.tsx
+│   │   ├── SignInScreen.tsx
+│   │   ├── SignUpScreen.tsx
+│   │   └── WelcomeScreen.tsx
+│   │   └── index.ts
+│   ├── services/
+│   │   ├── api/
+│   │   │   ├── problems.ts
+│   │   │   ├── addUserAction.ts
+│   │   │   └── index.ts
+│   │   ├── auth/
+│   │   │   ├── supabase.ts
+│   │   │   └── useAuth.tsx
+│   ├── stores/
+│   ├── theme/
+│   ├── types/
+│   ├── utils/
+│   │   ├── hooks/
+│   │   │   └── useSignedUrl.ts
+│   │   ├── storage/
+│   │   │   ├── index.ts
+│   │   │   └── sessionStorage.ts
+│   │   ├── crashReporting.ts
+│   │   ├── delay.ts
+│   │   ├── formatDate.ts
+│   │   ├── gestureHandler.native.ts
+│   │   ├── gestureHandler.ts
+│   │   ├── ignoreWarnings.ts
+│   │   ├── openLinkInBrowser.ts
+│   │   ├── useAppTheme.ts
+│   │   ├── useHeader.ts
+│   │   ├── useIsMounted.ts
+│   │   └── useSafeAreaInsetsStyle.ts
+│   ├── validation/
+│   └── app.tsx
+├── assets/
+├── ignite/
+├── node_modules/
+├── plugins/
+│   └── withSplashScreen.ts
+├── types/
+├── .cursorrules
+├── .env
+├── .gitignore
+├── app.config.ts
+├── app.json
+├── babel.config.js
+├── bun.lockb
+├── eas.json
+├── env.example
+├── eslint.config.mjs
+├── metro.config.js
+├── package.json
+└── tsconfig.json
+
+5. DOCUMENTAÇÃO DE ESTRUTURAS, FUNÇÕES E SUPABASE
+A seguir, temos a documentação mesclada sobre as tabelas, funções e triggers do Supabase. É fundamental para manter o backend alinhado com o aplicativo.
+Observação: Todo código SQL está em TypeScript + @supabase/supabase-js ou em forma de scripts que devem rodar no Supabase.
+5.1 Extensões Necessárias
+create extension if not exists "uuid-ossp";
+create extension if not exists postgis;
+- uuid-ossp: Para geração de UUIDs.
+- postgis: Para manipulação de dados geoespaciais.
+
+5.2 Enum action_type
+create type action_type as enum (
+  'report_problem',
+  'solve_problem',
+  'daily_check_in',
+  'feedback_response'
+);
+Enum que representa as ações do usuário que geram XP.
+
+5.3 Tabela level_config
+create table level_config (
+  level integer primary key,
+  xp_required integer not null,
+  title text not null,
+  description text,
+  created_at timestamptz default now(),
+  constraint valid_xp check (xp_required >= 0),
+  constraint level_order check (level > 0)
+);
+- Define a configuração de níveis do usuário (XP necessária, título, descrição, etc.).
+Inserindo dados iniciais na level_config
+insert into level_config (level, xp_required, title, description) values
+  (1, 0, 'Iniciante', 'Começando sua jornada'),
+  (2, 100, 'Observador', 'Seus olhos estão atentos'),
+  (3, 300, 'Cidadão Ativo', 'Participando ativamente'),
+  (4, 600, 'Guardião da Cidade', 'Protegendo nossa comunidade'),
+  (5, 1000, 'Líder Comunitário', 'Inspirando outros a ajudar'),
+  (6, 1500, 'Agente de Mudança', 'Transformando a comunidade'),
+  (7, 2100, 'Herói Local', 'Fazendo a diferença'),
+  (8, 2800, 'Lenda da Cidade', 'Sua dedicação é inspiradora'),
+  (9, 3600, 'Mestre Guardião', 'Um exemplo a ser seguido'),
+  (10, 4500, 'Guardião Supremo', 'O mais alto nível de dedicação');
+
+5.4 Tabela user_profiles
+create table if not exists public.user_profiles (
+  id uuid references auth.users on delete cascade primary key,
+  username text not null unique,
+  avatar_url text,
+  current_xp integer default 0,
+  current_level integer default 1,
+  current_streak integer default 0,
+  max_streak integer default 0,
+  last_check_in timestamptz,
+  problems_reported integer default 0,
+  problems_solved integer default 0,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  constraint valid_xp check (current_xp >= 0),
+  constraint valid_level check (current_level > 0),
+  constraint username_length check (char_length(username) >= 3)
+);
+- Mantém as informações de perfil (XP, nível, streak, etc.).
+- Após a criação, adiciona-se chave estrangeira para level_config:
+alter table public.user_profiles
+add constraint fk_level foreign key (current_level) references level_config(level);
+Função e Trigger para novos usuários
+Função handle_new_user()
+create or replace function handle_new_user()
+returns trigger as $$
+declare
+  username_base text;
+  final_username text;
+  suffix integer := 1;
+begin
+  username_base := split_part(new.email, '@', 1);
+  final_username := username_base;
+
+  if length(final_username) < 3 then
+    final_username := final_username || '_user';
+  end if;
+
+  while exists(select 1 from public.user_profiles where username = final_username) loop
+    final_username := username_base || suffix;
+    suffix := suffix + 1;
+    if length(final_username) < 3 then
+       final_username := username_base || '_user' || suffix;
+    end if;
+  end loop;
+
+  insert into public.user_profiles (id, username)
+  values (
+    new.id,
+    final_username
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
+Trigger on_auth_user_created
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function handle_new_user();
+
+5.5 Tabela reported_problems
+create table reported_problems (
+  id uuid primary key default uuid_generate_v4(),
+  title text not null,
+  description text not null,
+  category text not null,
+  location geometry(Point, 4326) not null,
+  image_url text,
+  status text default 'active',
+  reporter_id uuid not null references auth.users(id),
+  solver_id uuid references auth.users(id),
+  reported_at timestamptz default now(),
+  solved_at timestamptz,
+  updated_at timestamptz default now(),
+  constraint different_solver check (solver_id is null or solver_id != reporter_id),
+  constraint valid_status check (status in ('active', 'solved', 'invalid')),
+  constraint valid_solved check (
+    (status = 'solved' and solver_id is not null and solved_at is not null) or
+    (status != 'solved' and solver_id is null and solved_at is null)
+  )
+);
+
+5.6 Tabela action_rewards
+create table action_rewards (
+  action action_type primary key,
+  xp_reward integer not null check (xp_reward >= 0),
+  description text not null
+);
+Inserindo dados iniciais na action_rewards
+insert into action_rewards (action, xp_reward, description) values
+  ('report_problem', 50, 'Reportar um problema'),
+  ('solve_problem', 100, 'Resolver um problema'),
+  ('daily_check_in', 10, 'Check-in diário'),
+  ('feedback_response', 25, 'Responder pesquisa de feedback');
+
+5.7 Tabela user_actions
+create table user_actions (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid not null references auth.users(id),
+  action action_type not null,
+  xp_earned integer not null check (xp_earned >= 0),
+  reference_id uuid references reported_problems(id),
+  created_at timestamptz default now()
+);
+
+5.8 Tabela feedback_questions
+create table feedback_questions (
+  id uuid primary key default uuid_generate_v4(),
+  question text not null,
+  type text not null default 'likert',
+  active boolean default true,
+  created_at timestamptz default now()
+);
+Inserindo dados iniciais na feedback_questions
+insert into feedback_questions (question) values
+  ('Os emblemas me motivam a participar mais'),
+  ('O sistema de níveis influencia minha participação'),
+  ('As recompensas me incentivam a usar o app diariamente'),
+  ('A gamificação torna o app mais interessante'),
+  ('Me sinto mais engajado com os elementos de gamificação');
+
+5.9 Tabela feedback_responses
+create table feedback_responses (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid not null references auth.users(id),
+  question_id uuid not null references feedback_questions(id),
+  rating integer not null check (rating between 1 and 5),
+  created_at timestamptz default now(),
+  constraint one_response_per_question unique (user_id, question_id)
+);
+
+5.10 Tabela problem_upvotes
+create table problem_upvotes (
+  id uuid primary key default uuid_generate_v4(),
+  problem_id uuid references reported_problems(id) on delete cascade,
+  user_id uuid references auth.users(id) on delete cascade,
+  created_at timestamptz default now(),
+  constraint unique_upvote unique (problem_id, user_id)
+);
+- Cada usuário pode dar apenas 1 upvote por problema.
+
+5.11 Tabela problem_comments
+create table problem_comments (
+  id uuid primary key default uuid_generate_v4(),
+  problem_id uuid references reported_problems(id) on delete cascade,
+  user_id uuid references auth.users(id) on delete cascade,
+  comment text not null check (char_length(comment) >= 1),
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+5.12 Funções Importantes
+validate_action_points()
+create or replace function validate_action_points()
+returns trigger as $$
+begin
+  if NEW.xp_earned != (
+    select xp_reward
+    from action_rewards
+    where action = NEW.action
+  ) then
+    raise exception 'Pontos inválidos para a ação';
+  end if;
+  return NEW;
+end;
+$$ language plpgsql;
+- Garante que xp_earned em user_actions seja o exato valor definido em action_rewards.
+
+update_user_level()
+create or replace function update_user_level()
+returns trigger as $$
+begin
+  NEW.current_level := (
+    select level
+    from level_config
+    where xp_required <= NEW.current_xp
+    order by level desc
+    limit 1
+  );
+  return NEW;
+end;
+$$ language plpgsql;
+- Atualiza o nível do usuário com base no XP total.
+
+update_updated_at()
+create or replace function update_updated_at()
+returns trigger as $$
+begin
+  NEW.updated_at = now();
+  return NEW;
+end;
+$$ language plpgsql;
+- Atualiza updated_at sempre que a linha é modificada.
+
+get_profile_with_next_level(user_id uuid)
+create or replace function get_profile_with_next_level(user_id uuid)
+returns json as $$
+declare
+  user_profile public.user_profiles;
+  next_level level_config;
+begin
+  select * into user_profile
+  from public.user_profiles
+  where id = user_id;
+
+  select * into next_level
+  from level_config
+  where level > user_profile.current_level
+  order by level asc
+  limit 1;
+
+  return json_build_object(
+    'profile', user_profile,
+    'next_level', next_level
+  );
+end;
+$$ language plpgsql security definer;
+- Retorna o perfil completo + próximo nível em formato JSON.
+
+add_user_action(p_user_id uuid, p_action action_type, p_reference_id uuid default null)
+create or replace function add_user_action(
+  p_user_id uuid,
+  p_action action_type,
+  p_reference_id uuid default null
+)
+returns void as $$
+declare
+  v_reward integer;
+begin
+  select xp_reward into v_reward
+  from action_rewards
+  where action = p_action;
+
+  insert into user_actions (user_id, action, xp_earned, reference_id)
+  values (p_user_id, p_action, v_reward, p_reference_id);
+
+  update public.user_profiles
+  set current_xp = current_xp + v_reward,
+      problems_reported = case when p_action = 'report_problem' then problems_reported + 1 else problems_reported end,
+      problems_solved = case when p_action = 'solve_problem' then problems_solved + 1 else problems_solved end
+  where id = p_user_id;
+end;
+$$ language plpgsql security definer;
+- Registra a ação do usuário em user_actions, atualiza XP e contadores (problemas reportados/solucionados).
+
+perform_daily_check_in(p_user_id uuid)
+create or replace function perform_daily_check_in(
+  p_user_id uuid
+)
+returns void as $$
+declare
+  v_last_check_in timestamptz;
+  v_current_streak integer;
+  v_max_streak integer;
+  v_hours_since_last_check_in numeric;
+begin
+  select
+    last_check_in,
+    current_streak,
+    max_streak
+  into
+    v_last_check_in,
+    v_current_streak,
+    v_max_streak
+  from public.user_profiles
+  where id = p_user_id
+  for update;
+
+  if v_last_check_in is not null then
+    v_hours_since_last_check_in := extract(epoch from (now() AT TIME ZONE 'utc' - v_last_check_in AT TIME ZONE 'utc')) / 3600;
+    if v_hours_since_last_check_in < 24 then
+      raise exception 'Você precisa esperar 24 horas entre check-ins.';
+    end if;
+    v_current_streak := case
+      when v_hours_since_last_check_in <= 48 then v_current_streak + 1
+      else 1
+    end;
+  else
+    v_current_streak := 1;
+  end if;
+
+  v_max_streak := greatest(coalesce(v_max_streak, 0), v_current_streak);
+
+  update public.user_profiles
+  set
+    last_check_in = now(),
+    current_streak = v_current_streak,
+    max_streak = v_max_streak
+  where id = p_user_id;
+
+  perform add_user_action(p_user_id, 'daily_check_in');
+end;
+$$ language plpgsql security definer;
+- Faz check-in diário (limite de 24h entre check-ins).
+- Gera XP automaticamente chamando add_user_action.
+
+get_problem_upvotes(problem_id uuid)
+create or replace function get_problem_upvotes(problem_id uuid)
+returns integer as $$
+  select count(*)::integer
+  from problem_upvotes
+  where problem_upvotes.problem_id = $1;
+$$ language sql security definer;
+- Retorna a quantidade de upvotes em determinado problema.
+
+has_user_upvoted(problem_id uuid, user_id uuid)
+create or replace function has_user_upvoted(problem_id uuid, user_id uuid)
+returns boolean as $$
+  select exists(
+    select 1
+    from problem_upvotes
+    where problem_upvotes.problem_id = $1
+    and problem_upvotes.user_id = $2
+  );
+$$ language sql security definer;
+- Retorna true se o usuário já upvotou o problema, caso contrário false.
+
+5.13 Triggers
+create trigger validate_action_points_trigger
+  before insert on user_actions
+  for each row
+  execute function validate_action_points();
+
+create trigger on_profile_xp_change
+  before update of current_xp on public.user_profiles
+  for each row execute function update_user_level();
+
+create trigger update_reported_problems_timestamp
+  before update on reported_problems
+  for each row execute function update_updated_at();
+
+create trigger update_user_profiles_timestamp
+  before update on public.user_profiles
+  for each row execute function update_updated_at();
+
+create trigger update_problem_comments_timestamp
+  before update on problem_comments
+  for each row
+  execute function update_updated_at();
+- validate_action_points_trigger: chama validate_action_points antes de inserir em user_actions.
+- on_profile_xp_change: chama update_user_level antes de atualizar current_xp.
+- update_*_timestamp: chama update_updated_at antes de atualizar as respectivas tabelas.
+
+5.14 Índices
+create index problem_upvotes_problem_idx on problem_upvotes(problem_id);
+create index problem_upvotes_user_idx on problem_upvotes(user_id);
+create index problem_comments_problem_idx on problem_comments(problem_id);
+create index problem_comments_user_idx on problem_comments(user_id);
+create index problem_comments_created_idx on problem_comments(created_at desc);
+- Otimizam consultas relacionadas a upvotes e comentários.
+
+5.15 Views
+problem_comments_with_profiles
+create or replace view problem_comments_with_profiles as
+select
+  pc.*,
+  up.username,
+  up.avatar_url
+from problem_comments pc
+join public.user_profiles up on pc.user_id = up.id;
+- Facilita a recuperação de comentários com dados básicos do autor (username, avatar).
+
+5.16 Políticas de Segurança (RLS)
+user_profiles
+alter table public.user_profiles enable row level security;
+
+create policy "Perfis visíveis para usuários autenticados"
+  on public.user_profiles for select
+  to authenticated
+  using (true);
+
+create policy "Usuários editam próprio perfil"
+  on public.user_profiles for update
+  to authenticated
+  using (id = auth.uid());
+reported_problems
+alter table reported_problems enable row level security;
+
+create policy "Problemas visíveis para usuários autenticados"
+  on reported_problems for select
+  to authenticated
+  using (true);
+
+create policy "Usuários podem reportar problemas"
+  on reported_problems for insert
+  to authenticated
+  with check (reporter_id = auth.uid());
+
+create policy "Usuários podem resolver problemas (incluindo os próprios)"
+  on reported_problems for update
+  to authenticated
+  using (status = 'active')
+  with check (
+    solver_id = auth.uid() and
+    status = 'solved'
+  );
+
+create policy "Criadores podem deletar problemas não resolvidos"
+  on reported_problems for delete
+  to authenticated
+  using (
+    reporter_id = auth.uid() and
+    status = 'active'
+  );
+feedback_questions
+alter table feedback_questions enable row level security;
+
+create policy "Perguntas visíveis para todos"
+  on feedback_questions for select
+  to authenticated
+  using (active = true);
+feedback_responses
+alter table feedback_responses enable row level security;
+
+create policy "Usuários podem enviar respostas"
+  on feedback_responses for insert
+  to authenticated
+  with check (user_id = auth.uid());
+
+create policy "Usuários veem suas respostas"
+  on feedback_responses for select
+  to authenticated
+  using (user_id = auth.uid());
+problem_upvotes
+alter table problem_upvotes enable row level security;
+
+create policy "Usuários podem ver upvotes"
+  on problem_upvotes for select
+  to authenticated
+  using (true);
+
+create policy "Usuários podem dar upvote"
+  on problem_upvotes for insert
+  to authenticated
+  with check (auth.uid() = user_id);
+
+create policy "Usuários podem remover próprio upvote"
+  on problem_upvotes for delete
+  to authenticated
+  using (auth.uid() = user_id);
+problem_comments
+alter table problem_comments enable row level security;
+
+create policy "Usuários podem ver comentários"
+  on problem_comments for select
+  to authenticated
+  using (true);
+
+create policy "Usuários podem comentar"
+  on problem_comments for insert
+  to authenticated
+  with check (auth.uid() = user_id);
+
+create policy "Usuários podem editar próprios comentários"
+  on problem_comments for update
+  to authenticated
+  using (auth.uid() = user_id);
+
+create policy "Usuários podem deletar próprios comentários"
+  on problem_comments for delete
+  to authenticated
+  using (auth.uid() = user_id);
+
+5.17 Storage para Imagens de Problemas
+insert into storage.buckets (id, name, public)
+values ('problem-images', 'problem-images', false)
+on conflict (id) do nothing;
+
+create policy "Upload em pasta própria"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id = 'problem-images' and
+    auth.uid()::text = (storage.foldername(name))[1]
+  );
+
+create policy "Visualização de imagens"
+  on storage.objects for select
+  to authenticated
+  using (bucket_id = 'problem-images');
+- Cria o bucket problem-images.
+- Políticas que permitem somente upload em pasta própria.
+- Visualização de imagens para usuários autenticados.
+
+5.18 Uso com @supabase/supabase-js (Exemplos em TypeScript)
+A seguir, exemplos de chamadas de funções:
+Exemplo 1: get_profile_with_next_level
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function getUserProfileWithNextLevel(userId: string) {
+  const { data, error } = await supabase.rpc('get_profile_with_next_level', {
+    user_id: userId,
+  });
+  if (error) throw error;
+  return data;
+}
+Exemplo 2: Registrar ação com add_user_action
+async function reportProblem(userId: string, referenceId: string) {
+  const { data, error } = await supabase.rpc('add_user_action', {
+    p_user_id: userId,
+    p_action: 'report_problem',
+    p_reference_id: referenceId, // opcional
+  });
+  if (error) throw error;
+  return data;
+}
+Exemplo 3: Check-in diário (perform_daily_check_in)
+async function dailyCheckIn(userId: string) {
+  const { data, error } = await supabase.rpc('perform_daily_check_in', {
+    p_user_id: userId,
+  });
+  if (error) {
+    if (error.message.includes('Você precisa esperar 24 horas')) {
+      console.warn('Check-in diário ainda não está disponível.');
+    }
+    throw error;
+  }
+  return data;
+}
+Exemplo 4: Verificar upvotes (has_user_upvoted)
+async function checkIfUserUpvoted(problemId: string, userId: string) {
+  const { data, error } = await supabase.rpc('has_user_upvoted', {
+    problem_id: problemId,
+    user_id: userId,
+  });
+  if (error) throw error;
+  return data; // true ou false
+}
+Exemplo 5: Contar upvotes (get_problem_upvotes)
+async function countUpvotes(problemId: string) {
+  const { data, error } = await supabase.rpc('get_problem_upvotes', {
+    problem_id: problemId,
+  });
+  if (error) throw error;
+  return data; // número de upvotes
+}
+
+6. CONSIDERAÇÕES FINAIS
+- Segurança: Funções com security definer são executadas com privilégios do proprietário da função.
+- RLS (Row-Level Security): As políticas definidas garantem acesso somente aos dados do próprio usuário ou dados públicos.
+- Triggers: Centralizam a lógica de atualização de XP, níveis e timestamps, mantendo o código do app mais limpo.
+- Validações: Restrições de integridade garantem que as ações e dados inseridos estejam coerentes com as regras de negócio (por exemplo, XP de cada ação).
+Este documento serve como guia de referência para entender como funciona o esquema do banco de dados e as funções armazenadas no Supabase, garantindo a coerência com o App Nexus escrito em React Native + TypeScript.

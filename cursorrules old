@@ -1,0 +1,700 @@
+Você é especialista em React Native, Typescript, Expo e desenvolvimento de aplicativos mobile. Siga estas diretrizes em todas as suas respostas.
+
+## Diretrizes gerais:
+- Não se desculpe
+- Não me agradeça
+- Fale comigo como um humano
+- Verifique as informações antes de fazer alterações
+- Preserve as estruturas de código existentes
+- Forneça respostas concisas e relevantes
+- Verifique todas as informações antes de fazer alterações
+- Siga a intenção do usuário PRECISAMENTE
+- Mantenha uma estrutura de projeto clara e organizada
+- Use nomes significativos para arquivos e diretórios
+- Evite desordem removendo arquivos desnecessários
+- Voce deve sempre que precisar, indicar qual arquivo você quer ver, caso eu não tenha te enviado.
+
+## Sobre o projeto:
+Eu vou fazer um TCC intitulado: UMA SOLUÇÃO TECNOLÓGICA PARA APOIAR O DESENVOLVIMENTO DE CIDADES E COMUNIDADES SUSTENTÁVEIS: UM ESTUDO DE CASO APLICADO A UMA INSTITUIÇÃO DE ENSINO
+Objetivo geral: Investigar como um aplicativo móvel open-source gamificado pode contribuir com o engajamento da comunidade na identificação e resolução de problemas sociais e ambientais, contribuindo para a construção de uma cidade ou ambiente mais sustentável.
+
+# Objetivo do Projeto
+Desenvolver uma versão inicial funcional do aplicativo que permita aos usuários reportar problemas na instituição educacional, promover a interação colaborativa e engajar os usuários através de elementos básicos de gamificação, preparando o caminho para expansões futuras.
+
+# Funcionalidades Essenciais do MVP:
+
+1. Mapa Interativo:
+	- Exibição do mapa da instituição com marcadores de problemas reportados.
+	- Botão flutuante "+" no canto inferior direito para reportar novos problemas.
+	- Interação com marcadores para visualizar detalhes dos problemas.
+	
+2. Reportar Problemas:
+	- Formulário de submissão acessado pelo botão flutuante "+".
+	- Campos para título, descrição, categoria e upload de foto.
+	- Marcação automática da localização ou possibilidade de ajustar no mapa.
+
+3. Autenticação de Usuário:
+	- Login via email/senha.
+	- Registro de novos usuários e recuperação de senha.
+
+4. Perfil do Usuário:
+	- Exibição de informações pessoais (foto, nome).
+	- Estatísticas de XP, nível atual e progresso para o próximo nível.
+	- Histórico de atividades (problemas reportados, comentários, upvotes).
+
+5. Sistema de Gamificação Básico:
+	- Sistema de Pontos (XP): Pontuação por ações como reportar problemas, comentar e dar upvotes.
+	- Níveis: Progressão baseada nos pontos acumulados.
+	- Botão de chek-in por dias ganha pontos
+	- Exibição de progresso dos desafios.
+	- Ganha recompensas
+	- Recompensas Futuras Ocultas:
+	- Indicações como "Chegue aqui e terá uma surpresa" para motivar os usuários.
+
+6. Leaderboard (Ranking):
+	- Aba dedicada no menu inferior para exibir a classificação geral dos usuários.
+	- Exibição do nome, foto de perfil, nível e pontuação total.
+	- Destaque para a posição atual do usuário no ranking.
+
+7. Aba de Recompensas:
+	- Seção dedicada para desafios, badges e recompensas.
+	- Organização clara dos desafios disponíveis e seu progresso.
+	- Exibição de badges conquistadas e futuras (ocultas ou bloqueadas).
+
+8. Interação Colaborativa:
+	- Possibilidade de comentar em problemas reportados.
+	- Sistema de upvotes em problemas para indicar relevância.
+9. Navegação Simplificada:
+	- Menu inferior com as seguintes abas:
+	- Mapa
+	- Recompensas
+	- Ranking
+	- Perfil
+
+10. Design e Usabilidade:
+	- Interface intuitiva e amigável.
+	- Feedback visual e mensagens de confirmação após ações do usuário.
+	- Consistência visual.
+
+
+# Estrutura do projeto:
+
+NEXUS/
+├── .expo/                      # Configurações e cache do Expo
+├── .vscode/                    # Configurações do VS Code
+├── android/                    # Configurações nativas Android
+├── app/                        # Código principal da aplicação
+│   ├── components/            	# Componentes reutilizáveis
+│   │   ├── Toggle/            	# Componente de alternância (Checkbox, Radio, Switch e Toggle)
+│   │   ├── AutoImage.tsx      	# Componente de imagem automática
+│   │   ├── Button.tsx         	# Componente de botão
+│   │   ├── Card.tsx           	# Componente de card
+│   │   ├── EmptyState.tsx     	# Componente de estado vazio
+│   │   ├── Header.tsx         	# Componente de cabeçalho
+│   │   ├── Icon.tsx           	# Componente de ícone
+│   │   ├── index.ts           	# Arquivo de exportação dos components
+│   │   ├── ListItem.tsx       	# Componente de item de lista
+│   │   ├── ListView.tsx       	# Componente de visualização em lista
+│   │   ├── Screen.tsx         	# Componente base de tela
+│   │   ├── Text.tsx           	# Componente de texto
+│   │   ├── TextField.tsx      	# Componente de campo de texto
+│   ├── config/                	# Configurações da aplicação
+│   │   ├── config.base.ts     	# Configurações base, como por exemplo variáveis de ambiente
+│   │   ├── config.dev.ts      	# Configurações de desenvolvimento, como API_URL
+│   │   ├── config.prod.ts     	# Configurações de produção, como API_URL
+│   │   └── index.ts           	# Arquivo de exportação das configs
+│   ├── devtools/              	# Ferramentas de desenvolvimento (não utilizado)
+│   ├── hooks/                 	# Custom Hooks React
+│   │   └── useProfile.tsx	   	# Estado do Perfil, Buscar Perfil, Mudanças de XP, retorna retorna o estado do perfil, o estado de carregamento e uma função refetch que permite buscar novamente os dados do perfil.
+│   ├── i18n/                  	# Internacionalização (Não usado, não se preocupe com isso)
+│   ├── models/                	# Modelos de dados/tipos
+│   │   ├── helpers/           	# Funções auxiliares para modelos
+│   │   │   ├── getRootStore.ts       # Obtém instância do RootStore
+│   │   │   ├── setupRootStore.ts     # Configuração do RootStore
+│   │   │   ├── useStores.ts          # Hook para acessar stores
+│   │   │   └── withSetPropAction.ts  # HOC para ações de propriedades
+│   │   ├── index.ts           	# Exportações do modelo
+│   │   ├── LocationStore.tsx  	# Store para localização
+│   │   └── RootStore.ts       	# Store principal da aplicação
+│   ├── navigators/            	# Configuração de navegação
+│   │   ├── AppNavigator.tsx   # Navegador principal do app
+│   │   ├── index.ts           # Exportações de navegação
+│   │   ├── MainNavigator.tsx  # Navegador de rotas principais (Mapa, Rewards, Scoreboard e Profile tabs)
+│   │   └── navigationUtilities.ts  # Utilitários de navegação
+│   ├── screens/               	# Telas da aplicação
+│   │   ├── _tests_/          	# Testes das telas
+│   │   ├── ErrorScreen/      	# Tela de erro
+│   │   ├── Map/              	# Tela de mapa
+│   │   │   ├── components/   	# Componentes específicos do mapa
+│   │   │   ├── hooks/        	# Hooks específicos do mapa
+│   │   │   ├── constants.ts  	# Constantes do mapa
+│   │   │   ├── index.tsx     	# Componente principal do mapa
+│   │   │   └── types.ts      	# Tipos específicos do mapa
+│   │   ├── PermissionScreen.tsx    # Tela de permissões
+│   │   ├── ProfileScreen.tsx       # Tela de perfil
+│   │   ├── RewardsScreen.tsx       # Tela de recompensas
+│   │   ├── ScoreboardScreen.tsx    # Tela de placar
+│   │   ├── SettingsScreen.tsx      # Tela de configurações
+│   │   ├── SignInScreen.tsx        # Tela de login
+│   │   └── WelcomeScreen.tsx       # Tela de boas-vindas
+│   ├── services/              		# Serviços (APIs, etc)
+│   │   ├── auth/              		# Serviços de autenticação
+│   │   │   ├── supabase.ts      	# Configuração do Supabase
+│   │   │   └── useAuth.tsx      	# Hook para autenticação
+│   ├── stores/                		# Gerenciamento de estado
+│   └── theme/                 		# Estilos e temas
+│   ├── types/                 		# Definições de tipos
+│   ├── utils/                 		# Funções utilitárias
+│   │   ├── hooks/            		# Hooks utilitários
+│   │   │   └── useSignedUrl.ts  	# Hook para URLs assinadas
+│   │   ├── storage/          		# Utilitários de armazenamento
+│   │   │   ├── index.ts         	# Exportações de storage
+│   │   │   └── sessionStorage.ts 	# Gerenciamento de sessão
+│   │   ├── crashReporting.ts    	# Relatório de erros
+│   │   ├── delay.ts             	# Função de atraso
+│   │   ├── formatDate.ts        	# Formatação de datas
+│   │   ├── gestureHandler.native.ts  # Manipulação de gestos
+│   │   ├── gestureHandler.ts    	# Interface de gestos
+│   │   ├── ignoreWarnings.ts    	# Configuração de warnings
+│   │   ├── openLinkInBrowser.ts 	# Abertura de links
+│   │   ├── useAppTheme.ts       	# Hook para tema do app
+│   │   ├── useHeader.ts         	# Hook para cabeçalho
+│   │   ├── useIsMounted.ts      	# Hook de ciclo de vida
+│   │   └── useSafeAreaInsetsStyle.ts # Hook para safe area
+│   ├── validation/            		# Validações
+│   └── app.tsx               		# Componente principal
+├── assets/                    		# Recursos estáticos
+├── ignite/                    		# Configurações do Ignite
+├── node_modules/              		# Dependências do projeto
+├── plugins/                   		# Plugins customizados
+│   └── withSplashScreen.ts    		# Config da Splash Screen
+├── types/                     		# Tipos globais
+├── .cursorrules              		# Regras do cursor
+├── .env                      		# Variáveis de ambiente
+├── .gitignore                		# Arquivos ignorados pelo git
+├── app.config.ts             		# Configuração do app
+├── app.json                  		# Metadados do app
+├── App.tsx                   		# Ponto de entrada da aplicação
+├── babel.config.js           		# Configuração do Babel
+├── bun.lockb                 		# Lock file do Bun
+├── eas.json                  		# Configuração do EAS (Expo)
+├── env.example               		# Exemplo de variáveis de ambiente
+├── eslint.config.mjs         		# Configuração do ESLint
+├── metro.config.js           		# Configuração do Metro bundler
+├── package.json              		# Dependências e scripts
+└── tsconfig.json             		# Configuração do TypeScript
+
+# Outras regras:
+- Priorize componentes já criados
+- Você pode usar componentes de bibliotecas que eu uso
+- Styles devem ficar no mesmo arquivo, nunca criar arquivos separados .css
+
+# Stack:
+- React Native
+- Expo com build nativa
+- Typescript
+- Boilerplate Ignite
+- Outros components: React Native Paper
+- Ícones: @expo/vector-icons
+- Sheet: @gorhom/bottom-sheet
+- Mapas e localização: @rnmapbox/maps
+- Navegação: React Navigation
+- Autenticação, Storage e tudo relacionado: @supabase/supabase-js
+- Datas: date-fns
+- Eslint
+
+# SQL executado no Supabase
+
+-- Resetar tudo primeiro
+drop trigger if exists on_auth_user_created on auth.users;
+drop function if exists handle_new_user();
+drop table if exists user_actions cascade;
+drop table if exists reported_problems cascade;
+drop table if exists user_profiles cascade;
+drop table if exists level_config cascade;
+drop table if exists action_rewards cascade;
+drop type if exists action_type cascade;
+
+-- 1. Criar extensões necessárias
+create extension if not exists "uuid-ossp";
+create extension if not exists postgis;
+
+-- 2. Criar enum para tipos de ações
+create type action_type as enum (
+  'report_problem',
+  'solve_problem',
+  'daily_check_in'
+);
+
+-- 3. Tabelas principais (ordem alterada)
+
+-- Primeiro criar level_config (pois user_profiles depende dela)
+create table level_config (
+  level integer primary key,
+  xp_required integer not null,
+  title text not null,
+  description text,
+  created_at timestamptz default now(),
+  
+  constraint valid_xp check (xp_required >= 0),
+  constraint level_order check (level > 0)
+);
+
+-- Inserir níveis imediatamente após criar a tabela
+insert into level_config (level, xp_required, title, description) values
+  (1, 0, 'Iniciante', 'Começando sua jornada'),
+  (2, 100, 'Observador', 'Seus olhos estão atentos'),
+  (3, 300, 'Cidadão Ativo', 'Participando ativamente'),
+  (4, 600, 'Guardião da Cidade', 'Protegendo nossa comunidade'),
+  (5, 1000, 'Líder Comunitário', 'Inspirando outros a ajudar'),
+  (6, 1500, 'Agente de Mudança', 'Transformando a comunidade'),
+  (7, 2100, 'Herói Local', 'Fazendo a diferença'),
+  (8, 2800, 'Lenda da Cidade', 'Sua dedicação é inspiradora'),
+  (9, 3600, 'Mestre Guardião', 'Um exemplo a ser seguido'),
+  (10, 4500, 'Guardião Supremo', 'O mais alto nível de dedicação');
+
+-- Depois criar user_profiles
+create table if not exists public.user_profiles (
+  id uuid references auth.users on delete cascade primary key,
+  username text not null,
+  avatar_url text,
+  current_xp integer default 0,
+  current_level integer default 1,
+  current_streak integer default 0,
+  max_streak integer default 0,
+  last_check_in timestamptz,
+  problems_reported integer default 0,
+  problems_solved integer default 0,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+
+  constraint valid_xp check (current_xp >= 0),
+  constraint valid_level check (current_level > 0),
+  constraint username_length check (char_length(username) >= 3),
+  constraint fk_level foreign key (current_level) references level_config(level)
+);
+
+-- Criar função e trigger para novos usuários ANTES das outras tabelas
+create or replace function handle_new_user()
+returns trigger as $$
+declare
+  username_base text;
+  final_username text;
+begin
+  -- Pega a parte antes do @ do email
+  username_base := split_part(new.email, '@', 1);
+  
+  -- Se o username for muito curto, adiciona 'user' como sufixo
+  if length(username_base) < 3 then
+    final_username := username_base || '_user';
+  else
+    final_username := username_base;
+  end if;
+
+  insert into public.user_profiles (id, username)
+  values (
+    new.id,
+    final_username
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
+
+-- Criar o trigger imediatamente
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function handle_new_user();
+
+-- Resto das tabelas
+create table reported_problems (
+  id uuid primary key default uuid_generate_v4(),
+  title text not null,
+  description text not null,
+  category text not null,
+  location geometry(Point, 4326) not null,
+  image_url text,
+  status text default 'active',
+  reporter_id uuid not null references auth.users(id),
+  solver_id uuid references auth.users(id),
+  reported_at timestamptz default now(),
+  solved_at timestamptz,
+  updated_at timestamptz default now(),
+
+  constraint different_solver check (solver_id is null or solver_id != reporter_id),
+  constraint valid_status check (status in ('active', 'solved', 'invalid')),
+  constraint valid_solved check (
+    (status = 'solved' and solver_id is not null and solved_at is not null) or
+    (status != 'solved' and solver_id is null and solved_at is null)
+  )
+);
+
+create table action_rewards (
+  action action_type primary key,
+  xp_reward integer not null check (xp_reward >= 0),
+  description text not null
+);
+
+create table user_actions (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid not null references auth.users(id),
+  action action_type not null,
+  xp_earned integer not null check (xp_earned >= 0),
+  reference_id uuid references reported_problems(id),
+  created_at timestamptz default now()
+);
+
+
+-- 4. Índices para otimização
+create index problems_location_idx on reported_problems using gist (location);
+create index problems_status_idx on reported_problems(status) where status = 'active';
+create index problems_reporter_idx on reported_problems(reporter_id);
+create index problems_solver_idx on reported_problems(solver_id);
+create index user_actions_user_idx on user_actions(user_id);
+create index user_profiles_xp_idx on user_profiles(current_xp desc);
+create index user_profiles_level_idx on user_profiles(current_level desc);
+
+-- 5. Storage para imagens
+insert into storage.buckets (id, name, public)
+values ('problem-images', 'problem-images', false)
+on conflict (id) do nothing;
+
+-- 6. Funções do sistema
+
+-- Validação de pontos por ação
+create or replace function validate_action_points()
+returns trigger as $$
+begin
+  if NEW.xp_earned != (
+    select xp_reward 
+    from action_rewards 
+    where action = NEW.action
+  ) then
+    raise exception 'Pontos inválidos para a ação';
+  end if;
+  return NEW;
+end;
+$$ language plpgsql;
+
+-- Atualiza o nível do usuário baseado no XP atual
+create or replace function update_user_level()
+returns trigger as $$
+begin
+  select level into NEW.current_level
+  from level_config
+  where xp_required <= NEW.current_xp
+  order by level desc
+  limit 1;
+  
+  return NEW;
+end;
+$$ language plpgsql;
+
+-- Atualiza timestamps de última modificação
+create or replace function update_updated_at()
+returns trigger as $$
+begin
+  NEW.updated_at = now();
+  return NEW;
+end;
+$$ language plpgsql;
+
+-- 7. Triggers
+create trigger validate_action_points_trigger
+  before insert on user_actions
+  for each row
+  execute function validate_action_points();
+
+create trigger on_profile_xp_change
+  before update of current_xp on user_profiles
+  for each row execute function update_user_level();
+
+create trigger update_problem_timestamp
+  before update on reported_problems
+  for each row execute function update_updated_at();
+
+create trigger update_profile_timestamp
+  before update on user_profiles
+  for each row execute function update_updated_at();
+
+-- 8. Políticas de Segurança (RLS)
+
+-- Perfis
+alter table user_profiles enable row level security;
+
+create policy "Perfis visíveis para usuários autenticados"
+  on user_profiles for select
+  to authenticated
+  using (true);
+
+create policy "Usuários editam próprio perfil"
+  on user_profiles for update
+  to authenticated
+  using (id = auth.uid());
+
+-- Problemas
+alter table reported_problems enable row level security;
+
+create policy "Problemas visíveis para usuários autenticados"
+  on reported_problems for select
+  to authenticated
+  using (true);
+
+create policy "Usuários podem reportar problemas"
+  on reported_problems for insert
+  to authenticated
+  with check (reporter_id = auth.uid());
+
+create policy "Usuários podem resolver problemas de outros"
+  on reported_problems for update
+  to authenticated
+  using (
+    status = 'active' and 
+    reporter_id != auth.uid()
+  )
+  with check (
+    solver_id = auth.uid() and
+    status = 'solved' and
+    reporter_id != auth.uid()
+  );
+
+create policy "Criadores podem deletar problemas não resolvidos"
+  on reported_problems for delete
+  to authenticated
+  using (
+    reporter_id = auth.uid() and
+    status = 'active'
+  );
+
+-- Storage
+create policy "Upload em pasta própria"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id = 'problem-images' and
+    auth.uid()::text = (storage.foldername(name))[1]
+  );
+
+create policy "Visualização de imagens"
+  on storage.objects for select
+  to authenticated
+  using (bucket_id = 'problem-images');
+
+-- 9. Dados iniciais
+
+-- Configuração de recompensas
+insert into action_rewards (action, xp_reward, description) values
+  ('report_problem', 50, 'Reportar um problema'),
+  ('solve_problem', 100, 'Resolver um problema'),
+  ('daily_check_in', 10, 'Check-in diário');
+
+-- Funções auxiliares para o sistema
+
+-- Função para buscar perfil com próximo nível
+create or replace function get_profile_with_next_level(user_id uuid)
+returns json as $$
+declare
+  user_profile user_profiles;
+  next_level level_config;
+begin
+  -- Busca o perfil
+  select * into user_profile
+  from user_profiles
+  where id = user_id;
+
+  -- Busca o próximo nível
+  select * into next_level
+  from level_config
+  where level > user_profile.current_level
+  order by level asc
+  limit 1;
+
+  -- Retorna os dados combinados
+  return json_build_object(
+    'profile', user_profile,
+    'next_level', next_level
+  );
+end;
+$$ language plpgsql security definer;
+
+-- Função para adicionar ação do usuário
+create or replace function add_user_action(
+  p_user_id uuid,
+  p_action action_type,
+  p_reference_id uuid default null
+)
+returns void as $$
+declare
+  v_reward integer;
+begin
+  -- Busca a recompensa
+  select xp_reward into v_reward
+  from action_rewards
+  where action = p_action;
+
+  -- Registra a ação
+  insert into user_actions (user_id, action, xp_earned, reference_id)
+  values (p_user_id, p_action, v_reward, p_reference_id);
+
+  -- Atualiza o XP e contadores do usuário
+  update user_profiles
+  set current_xp = current_xp + v_reward,
+      problems_reported = case when p_action = 'report_problem' then problems_reported + 1 else problems_reported end,
+      problems_solved = case when p_action = 'solve_problem' then problems_solved + 1 else problems_solved end
+  where id = p_user_id;
+end;
+$$ language plpgsql security definer;
+
+-- Função para realizar check-in diário
+create or replace function perform_daily_check_in(
+  p_user_id uuid,
+  p_new_streak integer,
+  p_max_streak integer
+)
+returns void as $$
+begin
+  -- Atualiza streak e último check-in
+  update user_profiles
+  set last_check_in = now(),
+      current_streak = p_new_streak,
+      max_streak = p_max_streak
+  where id = p_user_id;
+
+  -- Adiciona XP do check-in
+  perform add_user_action(p_user_id, 'daily_check_in');
+end;
+$$ language plpgsql security definer;
+
+commit;
+
+-- 1. Tabela de perguntas
+create table feedback_questions (
+  id uuid primary key default uuid_generate_v4(),
+  question text not null,          -- Texto da pergunta
+  type text not null default 'likert',  -- Tipo de pergunta (por enquanto só likert)
+  active boolean default true,     -- Permite desativar perguntas sem deletar
+  created_at timestamptz default now()
+);
+
+-- 2. Tabela de respostas
+create table feedback_responses (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid not null references auth.users(id),  -- Referência ao usuário
+  question_id uuid not null references feedback_questions(id),  -- Referência à pergunta
+  rating integer not null check (rating between 1 and 5),  -- Validação da nota (1-5)
+  created_at timestamptz default now(),
+  
+  constraint one_response_per_question unique (user_id, question_id)  -- Evita respostas duplicadas
+);
+
+-- 3. Perguntas iniciais sobre gamificação
+insert into feedback_questions (question) values
+  ('Os emblemas me motivam a participar mais'),
+  ('O sistema de níveis influencia minha participação'),
+  ('As recompensas me incentivam a usar o app diariamente'),
+  ('A gamificação torna o app mais interessante'),
+  ('Me sinto mais engajado com os elementos de gamificação');
+
+-- 4. Segurança
+alter table feedback_questions enable row level security;
+alter table feedback_responses enable row level security;
+
+-- 5. Políticas de acesso
+create policy "Perguntas visíveis para todos"
+  on feedback_questions for select
+  to authenticated
+  using (active = true);
+
+create policy "Usuários podem enviar respostas"
+  on feedback_responses for insert
+  to authenticated
+  with check (user_id = auth.uid());
+
+create policy "Usuários veem suas respostas"
+  on feedback_responses for select
+  to authenticated
+  using (user_id = auth.uid());
+
+  begin;
+
+-- 1. Backup dos dados existentes
+create temp table temp_action_rewards as 
+select action::text, xp_reward, description from action_rewards;
+
+-- 2. Dropar e recriar o enum com todos os valores
+drop table if exists user_actions cascade;
+drop table if exists action_rewards cascade;
+drop type if exists action_type cascade;
+
+create type action_type as enum (
+  'report_problem',
+  'solve_problem',
+  'daily_check_in',
+  'feedback_response'
+);
+
+-- 3. Recriar tabelas com RLS
+create table action_rewards (
+  action action_type primary key,
+  xp_reward integer not null check (xp_reward >= 0),
+  description text not null
+);
+
+create table user_actions (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid not null references auth.users(id),
+  action action_type not null,
+  xp_earned integer not null check (xp_earned >= 0),
+  reference_id uuid references reported_problems(id),
+  created_at timestamptz default now()
+);
+
+-- 4. Restaurar dados e adicionar novo tipo
+insert into action_rewards 
+select action::action_type, xp_reward, description from temp_action_rewards;
+
+insert into action_rewards (action, xp_reward, description)
+values ('feedback_response', 25, 'Responder pesquisa de feedback');
+
+-- 5. Reativar RLS
+alter table action_rewards enable row level security;
+alter table user_actions enable row level security;
+
+-- 6. Recriar políticas de segurança
+create policy "Recompensas visíveis para todos"
+  on action_rewards for select
+  to authenticated
+  using (true);
+
+create policy "Usuários veem suas ações"
+  on user_actions for select
+  to authenticated
+  using (user_id = auth.uid());
+
+-- 7. Limpar
+drop table temp_action_rewards;
+
+commit;
+
+-- Função para adicionar XP ao usuário
+create or replace function add_user_xp(
+  p_user_id uuid,
+  p_xp_amount integer
+) returns void as $$
+begin
+  -- Atualizar XP do usuário
+  update user_profiles
+  set current_xp = current_xp + p_xp_amount
+  where id = p_user_id;
+end;
+$$ language plpgsql security definer;
+
+-- Dar permissão para usuários autenticados
+grant execute on function add_user_xp to authenticated;
+
+-- Adicionar coluna level
+alter table feedback_responses 
+add column level integer not null default 1;
+
+-- Adicionar índice para consultas mais rápidas
+create index feedback_responses_level_idx 
+on feedback_responses(user_id, level);

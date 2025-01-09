@@ -5,8 +5,6 @@ import * as ExpoLocation from 'expo-location'
 import * as IntentLauncher from 'expo-intent-launcher'
 import { useStores } from '@/models'
 import { observer } from 'mobx-react-lite'
-import { useNavigation } from '@react-navigation/native'
-import type { AppStackScreenProps } from '@/navigators'
 
 export const PermissionScreen = observer(() => {
   const { locationStore } = useStores()

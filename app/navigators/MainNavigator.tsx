@@ -13,7 +13,7 @@ export interface MainNavigatorParamList {
   Map: undefined
   Scoreboard: undefined
   Rewards: undefined
-  Settings: undefined
+  Profile: undefined
 }
 
 const Tab = createBottomTabNavigator<MainNavigatorParamList>()
@@ -78,14 +78,14 @@ export function MainNavigator() {
       />
 
       <Tab.Screen
-        name="Settings"
-        component={Screens.SettingsScreen}
+        name="Profile"
+        component={Screens.ProfileScreen}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'Profile',
           transitionSpec: TransitionSpecs.ShiftSpec,
           sceneStyleInterpolator: SceneStyleInterpolators.forShift,
           tabBarIcon: ({ focused }) => (
-            <Icon icon="settings" color={focused ? colors.tint : colors.tintInactive} size={24} />
+            <Icon icon="user" color={focused ? colors.tint : colors.tintInactive} size={24} />
           ),
         }}
       />

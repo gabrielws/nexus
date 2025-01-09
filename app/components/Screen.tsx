@@ -6,14 +6,15 @@ import { useRef, useState } from 'react'
 import type {
   KeyboardAvoidingViewProps,
   LayoutChangeEvent,
-  ScrollView,
   ScrollViewProps,
   StyleProp,
+  ViewProps,
   ViewStyle,
 } from 'react-native'
 import {
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   View,
 } from 'react-native'
 import { $styles } from '../theme'
@@ -81,6 +82,7 @@ interface ScrollScreenProps extends BaseScreenProps {
    * Pass any additional props directly to the ScrollView component.
    */
   ScrollViewProps?: ScrollViewProps
+  refreshControl?: React.ReactElement
 }
 
 interface AutoScreenProps extends Omit<ScrollScreenProps, 'preset'> {
@@ -204,16 +206,40 @@ function ScreenWithScrolling(props: ScreenProps) {
     contentContainerStyle,
     ScrollViewProps,
     style,
+    refreshControl,
   } = props as ScrollScreenProps
 
   const ref = useRef<ScrollView>(null)
-
   const { scrollEnabled, onContentSizeChange, onLayout } = useAutoPreset(props as AutoScreenProps)
-
-  // Add native behavior of pressing the active tab to scroll to the top of the content
-  // More info at: https://reactnavigation.org/docs/use-scroll-to-top/
   useScrollToTop(ref)
 
+  // Se tiver refreshControl, usa ScrollView nativo
+  if (refreshControl) {
+    return (
+      <ScrollView
+        {...{ keyboardShouldPersistTaps, scrollEnabled, ref, refreshControl }}
+        {...ScrollViewProps}
+        onLayout={(e) => {
+          onLayout(e)
+          ScrollViewProps?.onLayout?.(e)
+        }}
+        onContentSizeChange={(w: number, h: number) => {
+          onContentSizeChange(w, h)
+          ScrollViewProps?.onContentSizeChange?.(w, h)
+        }}
+        style={[$outerStyle, ScrollViewProps?.style, style]}
+        contentContainerStyle={[
+          $innerStyle,
+          ScrollViewProps?.contentContainerStyle,
+          contentContainerStyle,
+        ]}
+      >
+        {children}
+      </ScrollView>
+    )
+  }
+
+  // Caso contrário, usa KeyboardAwareScrollView
   return (
     <KeyboardAwareScrollView
       bottomOffset={keyboardBottomOffset}
