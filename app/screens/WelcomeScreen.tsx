@@ -1,23 +1,35 @@
-import { observer } from 'mobx-react-lite'
-import type { FC } from 'react'
-import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
-import { Image, View } from 'react-native'
-import { Screen, Text } from '@/components'
-import { isRTL } from '../i18n'
-import type { AppStackScreenProps } from '../navigators'
-import { $styles, type ThemedStyle } from '@/theme'
-import { useSafeAreaInsetsStyle } from '../utils/useSafeAreaInsetsStyle'
-import { useAppTheme } from '@/utils/useAppTheme'
+import { observer } from "mobx-react-lite"
+import { FC } from "react"
+import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import { Text, Screen, Button } from "@/components"
+import { isRTL } from "../i18n"
+import { AppStackScreenProps } from "../navigators"
+import { $styles, type ThemedStyle } from "@/theme"
+import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
+import { useAppTheme } from "@/utils/useAppTheme"
+import { useAuth } from "app/services/auth/useAuth"
+import { useHeader } from "@/utils/useHeader" // Importando o useHeader
+const welcomeLogo = require("../../assets/images/logo.png")
+const welcomeFace = require("../../assets/images/welcome-face.png")
 
-const welcomeLogo = require('../../assets/images/logo.png')
-const welcomeFace = require('../../assets/images/welcome-face.png')
+interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
-interface WelcomeScreenProps extends AppStackScreenProps<'Welcome'> {}
-
-export const WelcomeScreen: FC<WelcomeScreenProps> = observer(() => {
+export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen() {
   const { themed, theme } = useAppTheme()
+  const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
+  const { signOut } = useAuth()
 
-  const $bottomContainerInsets = useSafeAreaInsetsStyle(['bottom'])
+  // Definindo as propriedades do cabeçalho
+  const headerProps = {
+    title: "Bem-vindo",
+    leftIcon: "back" as any,
+    onLeftPress: () => console.log("Voltar pressionado"),
+    rightIcon: "settings" as any,
+    onRightPress: () => console.log("Configurações pressionadas"),
+  }
+
+  // Usando o hook useHeader
+  useHeader(headerProps)
 
   return (
     <Screen preset="fixed" contentContainerStyle={$styles.flex1}>
@@ -29,7 +41,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(() => {
           tx="welcomeScreen:readyForLaunch"
           preset="heading"
         />
-        <Text tx="welcomeScreen:exciting" preset="subheading" />
+        <Text text="Congratulations 🎉 You're signed in!" preset="subheading" />
         <Image
           style={$welcomeFace}
           source={welcomeFace}
@@ -39,7 +51,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(() => {
       </View>
 
       <View style={themed([$bottomContainer, $bottomContainerInsets])}>
-        <Text tx="welcomeScreen:postscript" size="md" />
+        <Button onPress={signOut}>Sign Out</Button>
       </View>
     </Screen>
   )
@@ -48,32 +60,32 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(() => {
 const $topContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexShrink: 1,
   flexGrow: 1,
-  flexBasis: '57%',
-  justifyContent: 'center',
+  flexBasis: "57%",
+  justifyContent: "center",
   paddingHorizontal: spacing.lg,
 })
 
 const $bottomContainer: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   flexShrink: 1,
   flexGrow: 0,
-  flexBasis: '43%',
+  flexBasis: "43%",
   backgroundColor: colors.palette.neutral100,
   borderTopLeftRadius: 16,
   borderTopRightRadius: 16,
   paddingHorizontal: spacing.lg,
-  justifyContent: 'space-around',
+  justifyContent: "space-around",
 })
 
 const $welcomeLogo: ThemedStyle<ImageStyle> = ({ spacing }) => ({
   height: 88,
-  width: '100%',
+  width: "100%",
   marginBottom: spacing.xxl,
 })
 
 const $welcomeFace: ImageStyle = {
   height: 169,
   width: 269,
-  position: 'absolute',
+  position: "absolute",
   bottom: -47,
   right: -80,
   transform: [{ scaleX: isRTL ? -1 : 1 }],

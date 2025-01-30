@@ -1,23 +1,19 @@
-import type { ThemedStyle, ThemedStyleArray } from '@/theme'
-import type { ComponentType, ReactElement } from 'react'
-import type {
+import { ComponentType, Fragment, ReactElement } from "react"
+import {
   StyleProp,
   TextStyle,
+  TouchableOpacity,
   TouchableOpacityProps,
+  View,
   ViewProps,
   ViewStyle,
-} from 'react-native'
-import type { TextProps } from './Text'
-import { useAppTheme } from '@/utils/useAppTheme'
-import { Fragment } from 'react'
-import {
-  TouchableOpacity,
-  View,
-} from 'react-native'
-import { $styles } from '../theme'
-import { Text } from './Text'
+} from "react-native"
+import type { ThemedStyle, ThemedStyleArray } from "@/theme"
+import { $styles } from "../theme"
+import { Text, TextProps } from "./Text"
+import { useAppTheme } from "@/utils/useAppTheme"
 
-type Presets = 'default' | 'reversed'
+type Presets = "default" | "reversed"
 
 interface CardProps extends TouchableOpacityProps {
   /**
@@ -33,7 +29,7 @@ interface CardProps extends TouchableOpacityProps {
    * `space-between` - spreads out the content evenly.
    * `force-footer-bottom` - aligns all content to the top, but forces the footer to the bottom.
    */
-  verticalAlignment?: 'top' | 'center' | 'space-between' | 'force-footer-bottom'
+  verticalAlignment?: "top" | "center" | "space-between" | "force-footer-bottom"
   /**
    * Custom component added to the left of the card body.
    */
@@ -45,16 +41,16 @@ interface CardProps extends TouchableOpacityProps {
   /**
    * The heading text to display if not using `headingTx`.
    */
-  heading?: TextProps['text']
+  heading?: TextProps["text"]
   /**
    * Heading text which is looked up via i18n.
    */
-  headingTx?: TextProps['tx']
+  headingTx?: TextProps["tx"]
   /**
    * Optional heading options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  headingTxOptions?: TextProps['txOptions']
+  headingTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for heading text.
    */
@@ -71,16 +67,16 @@ interface CardProps extends TouchableOpacityProps {
   /**
    * The content text to display if not using `contentTx`.
    */
-  content?: TextProps['text']
+  content?: TextProps["text"]
   /**
    * Content text which is looked up via i18n.
    */
-  contentTx?: TextProps['tx']
+  contentTx?: TextProps["tx"]
   /**
    * Optional content options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  contentTxOptions?: TextProps['txOptions']
+  contentTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for content text.
    */
@@ -97,16 +93,16 @@ interface CardProps extends TouchableOpacityProps {
   /**
    * The footer text to display if not using `footerTx`.
    */
-  footer?: TextProps['text']
+  footer?: TextProps["text"]
   /**
    * Footer text which is looked up via i18n.
    */
-  footerTx?: TextProps['tx']
+  footerTx?: TextProps["tx"]
   /**
    * Optional footer options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  footerTxOptions?: TextProps['txOptions']
+  footerTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for footer text.
    */
@@ -145,7 +141,7 @@ export function Card(props: CardProps) {
     FooterComponent,
     LeftComponent,
     RightComponent,
-    verticalAlignment = 'top',
+    verticalAlignment = "top",
     style: $containerStyleOverride,
     contentStyle: $contentStyleOverride,
     headingStyle: $headingStyleOverride,
@@ -161,7 +157,7 @@ export function Card(props: CardProps) {
     theme: { spacing },
   } = useAppTheme()
 
-  const preset: Presets = props.preset ?? 'default'
+  const preset: Presets = props.preset ?? "default"
   const isPressable = !!WrapperProps.onPress
   const isHeadingPresent = !!(HeadingComponent || heading || headingTx)
   const isContentPresent = !!(ContentComponent || content || contentTx)
@@ -170,7 +166,7 @@ export function Card(props: CardProps) {
   const Wrapper = (isPressable ? TouchableOpacity : View) as ComponentType<
     TouchableOpacityProps | ViewProps
   >
-  const HeaderContentWrapper = verticalAlignment === 'force-footer-bottom' ? View : Fragment
+  const HeaderContentWrapper = verticalAlignment === "force-footer-bottom" ? View : Fragment
 
   const $containerStyle: StyleProp<ViewStyle> = [
     themed($containerPresets[preset]),
@@ -206,50 +202,50 @@ export function Card(props: CardProps) {
     <Wrapper
       style={$containerStyle}
       activeOpacity={0.8}
-      accessibilityRole={isPressable ? 'button' : undefined}
+      accessibilityRole={isPressable ? "button" : undefined}
       {...WrapperProps}
     >
       {LeftComponent}
 
       <View style={$alignmentWrapperStyle}>
         <HeaderContentWrapper>
-          {HeadingComponent
-          || (isHeadingPresent && (
-            <Text
-              weight="bold"
-              text={heading}
-              tx={headingTx}
-              txOptions={headingTxOptions}
-              {...HeadingTextProps}
-              style={$headingStyle}
-            />
-          ))}
+          {HeadingComponent ||
+            (isHeadingPresent && (
+              <Text
+                weight="bold"
+                text={heading}
+                tx={headingTx}
+                txOptions={headingTxOptions}
+                {...HeadingTextProps}
+                style={$headingStyle}
+              />
+            ))}
 
-          {ContentComponent
-          || (isContentPresent && (
-            <Text
-              weight="normal"
-              text={content}
-              tx={contentTx}
-              txOptions={contentTxOptions}
-              {...ContentTextProps}
-              style={$contentStyle}
-            />
-          ))}
+          {ContentComponent ||
+            (isContentPresent && (
+              <Text
+                weight="normal"
+                text={content}
+                tx={contentTx}
+                txOptions={contentTxOptions}
+                {...ContentTextProps}
+                style={$contentStyle}
+              />
+            ))}
         </HeaderContentWrapper>
 
-        {FooterComponent
-        || (isFooterPresent && (
-          <Text
-            weight="normal"
-            size="xs"
-            text={footer}
-            tx={footerTx}
-            txOptions={footerTxOptions}
-            {...FooterTextProps}
-            style={$footerStyle}
-          />
-        ))}
+        {FooterComponent ||
+          (isFooterPresent && (
+            <Text
+              weight="normal"
+              size="xs"
+              text={footer}
+              tx={footerTx}
+              txOptions={footerTxOptions}
+              {...FooterTextProps}
+              style={$footerStyle}
+            />
+          ))}
       </View>
 
       {RightComponent}
@@ -257,7 +253,7 @@ export function Card(props: CardProps) {
   )
 }
 
-const $containerBase: ThemedStyle<ViewStyle> = theme => ({
+const $containerBase: ThemedStyle<ViewStyle> = (theme) => ({
   borderRadius: theme.spacing.md,
   padding: theme.spacing.xs,
   borderWidth: 1,
@@ -271,21 +267,21 @@ const $containerBase: ThemedStyle<ViewStyle> = theme => ({
 
 const $alignmentWrapper: ViewStyle = {
   flex: 1,
-  alignSelf: 'stretch',
+  alignSelf: "stretch",
 }
 
 const $alignmentWrapperFlexOptions = {
-  'top': 'flex-start',
-  'center': 'center',
-  'space-between': 'space-between',
-  'force-footer-bottom': 'space-between',
+  "top": "flex-start",
+  "center": "center",
+  "space-between": "space-between",
+  "force-footer-bottom": "space-between",
 } as const
 
 const $containerPresets: Record<Presets, ThemedStyleArray<ViewStyle>> = {
   default: [
     $styles.row,
     $containerBase,
-    theme => ({
+    (theme) => ({
       backgroundColor: theme.colors.palette.neutral100,
       borderColor: theme.colors.palette.neutral300,
     }),
@@ -293,7 +289,7 @@ const $containerPresets: Record<Presets, ThemedStyleArray<ViewStyle>> = {
   reversed: [
     $styles.row,
     $containerBase,
-    theme => ({
+    (theme) => ({
       backgroundColor: theme.colors.palette.neutral800,
       borderColor: theme.colors.palette.neutral500,
     }),
@@ -302,15 +298,15 @@ const $containerPresets: Record<Presets, ThemedStyleArray<ViewStyle>> = {
 
 const $headingPresets: Record<Presets, ThemedStyleArray<TextStyle>> = {
   default: [],
-  reversed: [theme => ({ color: theme.colors.palette.neutral100 })],
+  reversed: [(theme) => ({ color: theme.colors.palette.neutral100 })],
 }
 
 const $contentPresets: Record<Presets, ThemedStyleArray<TextStyle>> = {
   default: [],
-  reversed: [theme => ({ color: theme.colors.palette.neutral100 })],
+  reversed: [(theme) => ({ color: theme.colors.palette.neutral100 })],
 }
 
 const $footerPresets: Record<Presets, ThemedStyleArray<TextStyle>> = {
   default: [],
-  reversed: [theme => ({ color: theme.colors.palette.neutral100 })],
+  reversed: [(theme) => ({ color: theme.colors.palette.neutral100 })],
 }

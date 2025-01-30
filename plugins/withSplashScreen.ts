@@ -1,5 +1,4 @@
-import type { ConfigPlugin } from 'expo/config-plugins'
-import { AndroidConfig, withAndroidStyles, withStringsXml } from 'expo/config-plugins'
+import { ConfigPlugin, withStringsXml, AndroidConfig, withAndroidStyles } from "expo/config-plugins"
 
 /**
  *
@@ -32,15 +31,15 @@ const withAndroidSplashScreen: ConfigPlugin = (config) => {
  *
  * <string name="expo_splash_screen_status_bar_translucent" translatable="false">true</string>
  */
-const withCustomStringsXml: ConfigPlugin = config =>
+const withCustomStringsXml: ConfigPlugin = (config) =>
   withStringsXml(config, (modConfig) => {
     modConfig.modResults = AndroidConfig.Strings.setStringItem(
       [
         {
-          _: 'true',
+          _: "true",
           $: {
-            name: 'expo_splash_screen_status_bar_translucent',
-            translatable: 'false',
+            name: "expo_splash_screen_status_bar_translucent",
+            translatable: "false",
           },
         },
       ],
@@ -55,15 +54,15 @@ const withCustomStringsXml: ConfigPlugin = config =>
  *
  * <item name="android:windowIsTranslucent">true</item>
  */
-const withCustomStylesXml: ConfigPlugin = config =>
+const withCustomStylesXml: ConfigPlugin = (config) =>
   withAndroidStyles(config, async (modConfig) => {
     modConfig.modResults = AndroidConfig.Styles.assignStylesValue(modConfig.modResults, {
       add: true,
-      name: 'android:windowIsTranslucent',
-      value: 'true',
+      name: "android:windowIsTranslucent",
+      value: "true",
       parent: {
-        name: 'Theme.App.SplashScreen',
-        parent: 'AppTheme',
+        name: "Theme.App.SplashScreen",
+        parent: "AppTheme",
       },
     })
     return modConfig

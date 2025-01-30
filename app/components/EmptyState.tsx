@@ -1,20 +1,17 @@
-import type { ThemedStyle } from '@/theme'
-import type { ImageProps, ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native'
-import type { ButtonProps } from './Button'
-import type { TextProps } from './Text'
-import { useAppTheme } from '@/utils/useAppTheme'
-import { Image, View } from 'react-native'
-import { translate } from '../i18n'
-import { Button } from './Button'
-import { Text } from './Text'
+import { Image, ImageProps, ImageStyle, StyleProp, TextStyle, View, ViewStyle } from "react-native"
+import { translate } from "../i18n"
+import { Button, ButtonProps } from "./Button"
+import { Text, TextProps } from "./Text"
+import { useAppTheme } from "@/utils/useAppTheme"
+import type { ThemedStyle } from "@/theme"
 
-const sadFace = require('../../assets/images/sad-face.png')
+const sadFace = require("../../assets/images/sad-face.png")
 
 interface EmptyStateProps {
   /**
    * An optional prop that specifies the text/image set to use for the empty state.
    */
-  preset?: 'generic'
+  preset?: "generic"
   /**
    * Style override for the container.
    */
@@ -22,7 +19,7 @@ interface EmptyStateProps {
   /**
    * An Image source to be displayed above the heading.
    */
-  imageSource?: ImageProps['source']
+  imageSource?: ImageProps["source"]
   /**
    * Style overrides for image.
    */
@@ -30,20 +27,20 @@ interface EmptyStateProps {
   /**
    * Pass any additional props directly to the Image component.
    */
-  ImageProps?: Omit<ImageProps, 'source'>
+  ImageProps?: Omit<ImageProps, "source">
   /**
    * The heading text to display if not using `headingTx`.
    */
-  heading?: TextProps['text']
+  heading?: TextProps["text"]
   /**
    * Heading text which is looked up via i18n.
    */
-  headingTx?: TextProps['tx']
+  headingTx?: TextProps["tx"]
   /**
    * Optional heading options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  headingTxOptions?: TextProps['txOptions']
+  headingTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for heading text.
    */
@@ -55,16 +52,16 @@ interface EmptyStateProps {
   /**
    * The content text to display if not using `contentTx`.
    */
-  content?: TextProps['text']
+  content?: TextProps["text"]
   /**
    * Content text which is looked up via i18n.
    */
-  contentTx?: TextProps['tx']
+  contentTx?: TextProps["tx"]
   /**
    * Optional content options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  contentTxOptions?: TextProps['txOptions']
+  contentTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for content text.
    */
@@ -76,28 +73,28 @@ interface EmptyStateProps {
   /**
    * The button text to display if not using `buttonTx`.
    */
-  button?: TextProps['text']
+  button?: TextProps["text"]
   /**
    * Button text which is looked up via i18n.
    */
-  buttonTx?: TextProps['tx']
+  buttonTx?: TextProps["tx"]
   /**
    * Optional button options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  buttonTxOptions?: TextProps['txOptions']
+  buttonTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for button.
    */
-  buttonStyle?: ButtonProps['style']
+  buttonStyle?: ButtonProps["style"]
   /**
    * Style overrides for button text.
    */
-  buttonTextStyle?: ButtonProps['textStyle']
+  buttonTextStyle?: ButtonProps["textStyle"]
   /**
    * Called when the button is pressed.
    */
-  buttonOnPress?: ButtonProps['onPress']
+  buttonOnPress?: ButtonProps["onPress"]
   /**
    * Pass any additional props directly to the Button component.
    */
@@ -105,20 +102,11 @@ interface EmptyStateProps {
 }
 
 interface EmptyStatePresetItem {
-  imageSource: ImageProps['source']
-  heading: TextProps['text']
-  content: TextProps['text']
-  button: TextProps['text']
+  imageSource: ImageProps["source"]
+  heading: TextProps["text"]
+  content: TextProps["text"]
+  button: TextProps["text"]
 }
-
-const EmptyStatePresets = {
-  generic: {
-    imageSource: sadFace,
-    heading: translate('emptyStateComponent:generic.heading'),
-    content: translate('emptyStateComponent:generic.content'),
-    button: translate('emptyStateComponent:generic.button'),
-  } as EmptyStatePresetItem,
-} as const
 
 /**
  * A component to use when there is no data to display. It can be utilized to direct the user what to do next.
@@ -133,7 +121,16 @@ export function EmptyState(props: EmptyStateProps) {
     theme: { spacing },
   } = useAppTheme()
 
-  const preset = EmptyStatePresets[props.preset ?? 'generic']
+  const EmptyStatePresets = {
+    generic: {
+      imageSource: sadFace,
+      heading: translate("emptyStateComponent:generic.heading"),
+      content: translate("emptyStateComponent:generic.content"),
+      button: translate("emptyStateComponent:generic.button"),
+    } as EmptyStatePresetItem,
+  } as const
+
+  const preset = EmptyStatePresets[props.preset ?? "generic"]
 
   const {
     button = preset.button,
@@ -238,12 +235,12 @@ export function EmptyState(props: EmptyStateProps) {
   )
 }
 
-const $image: ImageStyle = { alignSelf: 'center' }
+const $image: ImageStyle = { alignSelf: "center" }
 const $heading: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  textAlign: 'center',
+  textAlign: "center",
   paddingHorizontal: spacing.lg,
 })
 const $content: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  textAlign: 'center',
+  textAlign: "center",
   paddingHorizontal: spacing.lg,
 })

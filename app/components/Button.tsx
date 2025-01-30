@@ -1,22 +1,18 @@
-import type { ThemedStyle, ThemedStyleArray } from '@/theme'
-import type { ComponentType } from 'react'
-import type {
+import { ComponentType } from "react"
+import {
+  Pressable,
   PressableProps,
   PressableStateCallbackType,
   StyleProp,
   TextStyle,
   ViewStyle,
-} from 'react-native'
-import type { TextProps } from './Text'
-import { useAppTheme } from '@/utils/useAppTheme'
-import React from 'react'
-import {
-  Pressable,
-} from 'react-native'
-import { $styles } from '../theme'
-import { Text } from './Text'
+} from "react-native"
+import type { ThemedStyle, ThemedStyleArray } from "@/theme"
+import { $styles } from "../theme"
+import { Text, TextProps } from "./Text"
+import { useAppTheme } from "@/utils/useAppTheme"
 
-type Presets = 'default' | 'filled' | 'reversed'
+type Presets = "default" | "filled" | "reversed"
 
 export interface ButtonAccessoryProps {
   style: StyleProp<any>
@@ -28,16 +24,16 @@ export interface ButtonProps extends PressableProps {
   /**
    * Text which is looked up via i18n.
    */
-  tx?: TextProps['tx']
+  tx?: TextProps["tx"]
   /**
    * The text to display if not using `tx` or nested components.
    */
-  text?: TextProps['text']
+  text?: TextProps["text"]
   /**
    * Optional options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  txOptions?: TextProps['txOptions']
+  txOptions?: TextProps["txOptions"]
   /**
    * An optional style override useful for padding & margin.
    */
@@ -121,7 +117,7 @@ export function Button(props: ButtonProps) {
 
   const { themed } = useAppTheme()
 
-  const preset: Presets = props.preset ?? 'default'
+  const preset: Presets = props.preset ?? "default"
   /**
    * @param {PressableStateCallbackType} root0 - The root object containing the pressed state.
    * @param {boolean} root0.pressed - The pressed state.
@@ -157,7 +153,7 @@ export function Button(props: ButtonProps) {
       {...rest}
       disabled={disabled}
     >
-      {state => (
+      {(state) => (
         <>
           {!!LeftAccessory && (
             <LeftAccessory style={$leftAccessoryStyle} pressableState={state} disabled={disabled} />
@@ -183,18 +179,18 @@ export function Button(props: ButtonProps) {
 const $baseViewStyle: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   minHeight: 56,
   borderRadius: 4,
-  justifyContent: 'center',
-  alignItems: 'center',
+  justifyContent: "center",
+  alignItems: "center",
   paddingVertical: spacing.sm,
   paddingHorizontal: spacing.sm,
-  overflow: 'hidden',
+  overflow: "hidden",
 })
 
 const $baseTextStyle: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontSize: 16,
   lineHeight: 20,
   fontFamily: typography.primary.medium,
-  textAlign: 'center',
+  textAlign: "center",
   flexShrink: 1,
   flexGrow: 0,
   zIndex: 2,

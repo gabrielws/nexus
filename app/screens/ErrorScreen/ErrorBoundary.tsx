@@ -1,10 +1,9 @@
-import type { ErrorInfo, ReactNode } from 'react'
-import { Component } from 'react'
-import { ErrorDetails } from './ErrorDetails'
+import { Component, ErrorInfo, ReactNode } from "react"
+import { ErrorDetails } from "./ErrorDetails"
 
 interface Props {
   children: ReactNode
-  catchErrors: 'always' | 'dev' | 'prod' | 'never'
+  catchErrors: "always" | "dev" | "prod" | "never"
 }
 
 interface State {
@@ -55,24 +54,22 @@ export class ErrorBoundary extends Component<Props, State> {
   // Only enable if we're catching errors in the right environment
   isEnabled(): boolean {
     return (
-      this.props.catchErrors === 'always'
-      || (this.props.catchErrors === 'dev' && __DEV__)
-      || (this.props.catchErrors === 'prod' && !__DEV__)
+      this.props.catchErrors === "always" ||
+      (this.props.catchErrors === "dev" && __DEV__) ||
+      (this.props.catchErrors === "prod" && !__DEV__)
     )
   }
 
   // Render an error UI if there's an error; otherwise, render children
   render() {
-    return this.isEnabled() && this.state.error
-      ? (
-          <ErrorDetails
-            onReset={this.resetError}
-            error={this.state.error}
-            errorInfo={this.state.errorInfo}
-          />
-        )
-      : (
-          this.props.children
-        )
+    return this.isEnabled() && this.state.error ? (
+      <ErrorDetails
+        onReset={this.resetError}
+        error={this.state.error}
+        errorInfo={this.state.errorInfo}
+      />
+    ) : (
+      this.props.children
+    )
   }
 }

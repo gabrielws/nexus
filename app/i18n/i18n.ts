@@ -1,47 +1,45 @@
-import * as Localization from 'expo-localization'
-import { I18nManager } from 'react-native'
-import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
-import 'intl-pluralrules'
+import * as Localization from "expo-localization"
+import { I18nManager } from "react-native"
+import i18n from "i18next"
+import { initReactI18next } from "react-i18next"
+import "intl-pluralrules"
 
 // if English isn't your default language, move Translations to the appropriate language file.
-import type { Translations } from './en'
-import en from './en'
-import pt from './pt'
+import en from "./en"
+import pt, { Translations } from "./pt"
+import es from "./es"
 
-const fallbackLocale = 'en-US'
+const fallbackLocale = "en-US"
 
 const systemLocales = Localization.getLocales()
 
-const resources = { pt, en }
+const resources = { pt, en, es }
 const supportedTags = Object.keys(resources)
 
 // Checks to see if the device locale matches any of the supported locales
 // Device locale may be more specific and still match (e.g., en-US matches en)
-function systemTagMatchesSupportedTags(deviceTag: string) {
-  const primaryTag = deviceTag.split('-')[0]
+const systemTagMatchesSupportedTags = (deviceTag: string) => {
+  const primaryTag = deviceTag.split("-")[0]
   return supportedTags.includes(primaryTag)
 }
 
 const pickSupportedLocale: () => Localization.Locale | undefined = () => {
-  return systemLocales.find(locale => systemTagMatchesSupportedTags(locale.languageTag))
+  return systemLocales.find((locale) => systemTagMatchesSupportedTags(locale.languageTag))
 }
 
 const locale = pickSupportedLocale()
 
-// eslint-disable-next-line import/no-mutable-exports
 export let isRTL = false
 
 // Need to set RTL ASAP to ensure the app is rendered correctly. Waiting for i18n to init is too late.
-if (locale?.languageTag && locale?.textDirection === 'rtl') {
+if (locale?.languageTag && locale?.textDirection === "rtl") {
   I18nManager.allowRTL(true)
   isRTL = true
-}
-else {
+} else {
   I18nManager.allowRTL(false)
 }
 
-export async function initI18n() {
+export const initI18n = async () => {
   i18n.use(initReactI18next)
 
   await i18n.init({

@@ -1,5 +1,3 @@
-import type { IStateTreeNode, SnapshotIn } from 'mobx-state-tree'
-
 /**
  * If you include this in your model in an action() block just under your props,
  * it'll allow you to set property values directly while retaining type safety
@@ -21,12 +19,9 @@ import type { IStateTreeNode, SnapshotIn } from 'mobx-state-tree'
  *   user.setProp("age", 30)      // no type error
  *   user.setProp("age", "30")    // type error -- must be number
  */
-export function withSetPropAction<T extends IStateTreeNode>(mstInstance: T) {
-  return {
-  // generic setter for all properties
-    setProp<K extends keyof SnapshotIn<T>, V extends SnapshotIn<T>[K]>(field: K, newValue: V) {
-    // @ts-expect-error - for some reason TS complains about this, but it still works fine
-      mstInstance[field] = newValue
-    },
-  }
-}
+export const withSetPropAction = (self: any) => ({
+  setProp<K extends keyof typeof self>(key: K, value: (typeof self)[K]) {
+    if (key === "realtimeChannel") return // Ignora tentativas de modificar realtimeChannel
+    self[key] = value
+  },
+})

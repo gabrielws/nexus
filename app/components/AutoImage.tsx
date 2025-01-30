@@ -1,6 +1,5 @@
-import type { ImageProps, ImageURISource } from 'react-native'
-import { useLayoutEffect, useState } from 'react'
-import { Image, PixelRatio, Platform } from 'react-native'
+import { useLayoutEffect, useState } from "react"
+import { Image, ImageProps, ImageURISource, Platform, PixelRatio } from "react-native"
 
 export interface AutoImageProps extends ImageProps {
   /**
@@ -40,19 +39,16 @@ export function useAutoImage(
   const [maxWidth, maxHeight] = dimensions ?? []
 
   useLayoutEffect(() => {
-    if (!remoteUri)
-      return
+    if (!remoteUri) return
 
     if (!headers) {
       Image.getSize(remoteUri, (w, h) => setRemoteImageDimensions([w, h]))
-    }
-    else {
+    } else {
       Image.getSizeWithHeaders(remoteUri, headers, (w, h) => setRemoteImageDimensions([w, h]))
     }
   }, [remoteUri, headers])
 
-  if (Number.isNaN(remoteAspectRatio))
-    return [0, 0]
+  if (Number.isNaN(remoteAspectRatio)) return [0, 0]
 
   if (maxWidth && maxHeight) {
     const aspectRatio = Math.min(maxWidth / remoteWidth, maxHeight / remoteHeight)
@@ -60,14 +56,11 @@ export function useAutoImage(
       PixelRatio.roundToNearestPixel(remoteWidth * aspectRatio),
       PixelRatio.roundToNearestPixel(remoteHeight * aspectRatio),
     ]
-  }
-  else if (maxWidth) {
+  } else if (maxWidth) {
     return [maxWidth, PixelRatio.roundToNearestPixel(maxWidth / remoteAspectRatio)]
-  }
-  else if (maxHeight) {
+  } else if (maxHeight) {
     return [PixelRatio.roundToNearestPixel(maxHeight * remoteAspectRatio), maxHeight]
-  }
-  else {
+  } else {
     return [remoteWidth, remoteHeight]
   }
 }

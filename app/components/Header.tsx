@@ -1,25 +1,19 @@
-/* eslint-disable react/no-unstable-default-props */
-import type { ReactElement } from 'react'
-import type {
+import { ReactElement } from "react"
+import {
   StyleProp,
   TextStyle,
-  TouchableOpacityProps,
-  ViewStyle,
-} from 'react-native'
-import {
   TouchableOpacity,
+  TouchableOpacityProps,
   View,
-} from 'react-native'
-import { isRTL, translate } from '../i18n'
-import { $styles } from '../theme'
-import type { ExtendedEdge } from '../utils/useSafeAreaInsetsStyle'
-import { useSafeAreaInsetsStyle } from '../utils/useSafeAreaInsetsStyle'
-import type { IconTypes } from './Icon'
-import { Icon } from './Icon'
-import type { TextProps } from './Text'
-import { Text } from './Text'
-import { useAppTheme } from '@/utils/useAppTheme'
-import type { ThemedStyle } from '@/theme'
+  ViewStyle,
+} from "react-native"
+import { isRTL, translate } from "../i18n"
+import { $styles } from "../theme"
+import { ExtendedEdge, useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
+import { Icon, IconTypes } from "./Icon"
+import { Text, TextProps } from "./Text"
+import { useAppTheme } from "@/utils/useAppTheme"
+import type { ThemedStyle } from "@/theme"
 
 export interface HeaderProps {
   /**
@@ -27,7 +21,7 @@ export interface HeaderProps {
    * - `center` will force the title to always be centered relative to the header. If the title or the action buttons are too long, the title will be cut off.
    * - `flex` will attempt to center the title relative to the action buttons. If the action buttons are different widths, the title will be off-center relative to the header.
    */
-  titleMode?: 'center' | 'flex'
+  titleMode?: "center" | "flex"
   /**
    * Optional title style override.
    */
@@ -51,16 +45,16 @@ export interface HeaderProps {
   /**
    * Title text to display if not using `tx` or nested components.
    */
-  title?: TextProps['text']
+  title?: TextProps["text"]
   /**
    * Title text which is looked up via i18n.
    */
-  titleTx?: TextProps['tx']
+  titleTx?: TextProps["tx"]
   /**
    * Optional options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  titleTxOptions?: TextProps['txOptions']
+  titleTxOptions?: TextProps["txOptions"]
   /**
    * Icon that should appear on the left.
    * Can be used with `onLeftPress`.
@@ -74,12 +68,12 @@ export interface HeaderProps {
    * Left action text to display if not using `leftTx`.
    * Can be used with `onLeftPress`. Overrides `leftIcon`.
    */
-  leftText?: TextProps['text']
+  leftText?: TextProps["text"]
   /**
    * Left action text text which is looked up via i18n.
    * Can be used with `onLeftPress`. Overrides `leftIcon`.
    */
-  leftTx?: TextProps['tx']
+  leftTx?: TextProps["tx"]
   /**
    * Left action custom ReactElement if the built in action props don't suffice.
    * Overrides `leftIcon`, `leftTx` and `leftText`.
@@ -89,11 +83,11 @@ export interface HeaderProps {
    * Optional options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  leftTxOptions?: TextProps['txOptions']
+  leftTxOptions?: TextProps["txOptions"]
   /**
    * What happens when you press the left icon or text action.
    */
-  onLeftPress?: TouchableOpacityProps['onPress']
+  onLeftPress?: TouchableOpacityProps["onPress"]
   /**
    * Icon that should appear on the right.
    * Can be used with `onRightPress`.
@@ -107,12 +101,12 @@ export interface HeaderProps {
    * Right action text to display if not using `rightTx`.
    * Can be used with `onRightPress`. Overrides `rightIcon`.
    */
-  rightText?: TextProps['text']
+  rightText?: TextProps["text"]
   /**
    * Right action text text which is looked up via i18n.
    * Can be used with `onRightPress`. Overrides `rightIcon`.
    */
-  rightTx?: TextProps['tx']
+  rightTx?: TextProps["tx"]
   /**
    * Right action custom ReactElement if the built in action props don't suffice.
    * Overrides `rightIcon`, `rightTx` and `rightText`.
@@ -122,11 +116,11 @@ export interface HeaderProps {
    * Optional options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
-  rightTxOptions?: TextProps['txOptions']
+  rightTxOptions?: TextProps["txOptions"]
   /**
    * What happens when you press the right icon or text action.
    */
-  onRightPress?: TouchableOpacityProps['onPress']
+  onRightPress?: TouchableOpacityProps["onPress"]
   /**
    * Override the default edges for the safe area.
    */
@@ -137,10 +131,10 @@ interface HeaderActionProps {
   backgroundColor?: string
   icon?: IconTypes
   iconColor?: string
-  text?: TextProps['text']
-  tx?: TextProps['tx']
-  txOptions?: TextProps['txOptions']
-  onPress?: TouchableOpacityProps['onPress']
+  text?: TextProps["text"]
+  tx?: TextProps["tx"]
+  txOptions?: TextProps["txOptions"]
+  onPress?: TouchableOpacityProps["onPress"]
   ActionComponent?: ReactElement
 }
 
@@ -156,7 +150,6 @@ export function Header(props: HeaderProps) {
     theme: { colors },
     themed,
   } = useAppTheme()
-
   const {
     backgroundColor = colors.background,
     LeftActionComponent,
@@ -173,9 +166,9 @@ export function Header(props: HeaderProps) {
     rightText,
     rightTx,
     rightTxOptions,
-    safeAreaEdges = ['top'],
+    safeAreaEdges = ["top"],
     title,
-    titleMode = 'center',
+    titleMode = "center",
     titleTx,
     titleTxOptions,
     titleContainerStyle: $titleContainerStyleOverride,
@@ -205,15 +198,15 @@ export function Header(props: HeaderProps) {
         {!!titleContent && (
           <View
             style={[
-              titleMode === 'center' && themed($titleWrapperCenter),
-              titleMode === 'flex' && $titleWrapperFlex,
+              titleMode === "center" && themed($titleWrapperCenter),
+              titleMode === "flex" && $titleWrapperFlex,
               $titleContainerStyleOverride,
             ]}
             pointerEvents="none"
           >
             <Text
               weight="medium"
-              size="md"
+              size="lg"
               text={titleContent}
               style={[$title, $titleStyleOverride]}
             />
@@ -245,8 +238,7 @@ function HeaderAction(props: HeaderActionProps) {
 
   const content = tx ? translate(tx, txOptions) : text
 
-  if (ActionComponent)
-    return ActionComponent
+  if (ActionComponent) return ActionComponent
 
   if (content) {
     return (
@@ -269,7 +261,7 @@ function HeaderAction(props: HeaderActionProps) {
         color={iconColor}
         onPress={onPress}
         containerStyle={themed([$actionIconContainer, { backgroundColor }])}
-        style={isRTL ? { transform: [{ rotate: '180deg' }] } : {}}
+        style={isRTL ? { transform: [{ rotate: "180deg" }] } : {}}
       />
     )
   }
@@ -278,24 +270,25 @@ function HeaderAction(props: HeaderActionProps) {
 }
 
 const $wrapper: ViewStyle = {
-  height: 56,
-  alignItems: 'center',
-  justifyContent: 'space-between',
+  height: 80,
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginBottom: -10,
 }
 
 const $container: ViewStyle = {
-  width: '100%',
+  width: "100%",
 }
 
 const $title: TextStyle = {
-  textAlign: 'center',
+  textAlign: "center",
 }
 
 const $actionTextContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexGrow: 0,
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100%',
+  alignItems: "center",
+  justifyContent: "center",
+  height: "100%",
   paddingHorizontal: spacing.md,
   zIndex: 2,
 })
@@ -306,9 +299,9 @@ const $actionText: ThemedStyle<TextStyle> = ({ colors }) => ({
 
 const $actionIconContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexGrow: 0,
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100%',
+  alignItems: "center",
+  justifyContent: "center",
+  height: "100%",
   paddingHorizontal: spacing.md,
   zIndex: 2,
 })
@@ -318,16 +311,16 @@ const $actionFillerContainer: ViewStyle = {
 }
 
 const $titleWrapperCenter: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100%',
-  width: '100%',
-  position: 'absolute',
+  alignItems: "center",
+  justifyContent: "center",
+  height: "100%",
+  width: "100%",
+  position: "absolute",
   paddingHorizontal: spacing.xxl,
   zIndex: 1,
 })
 
 const $titleWrapperFlex: ViewStyle = {
-  justifyContent: 'center',
+  justifyContent: "center",
   flexGrow: 1,
 }

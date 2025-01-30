@@ -1,47 +1,57 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable import/first */
-/**
- * Welcome to the main entry point of the app. In this file, we'll
- * be kicking off our app.
- *
- * Most of this file is boilerplate and you shouldn't need to modify
- * it very often. But take some time to look through and understand
- * what is going on here.
- *
- * The app navigation resides in ./app/navigators, so head over there
- * if you're interested in adding screens and navigators.
- */
 if (__DEV__) {
-  // Load Reactotron in development only.
-  // Note that you must be using metro's `inlineRequires` for this to work.
-  // If you turn it off in metro.config.js, you'll have to manually import it.
-  require('./devtools/ReactotronConfig.ts')
+  require("./devtools/ReactotronConfig.ts")
 }
-import './utils/gestureHandler'
-import { initI18n } from './i18n'
-import './utils/ignoreWarnings'
-import { useFonts } from 'expo-font'
-import { useEffect, useState } from 'react'
-import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
-import * as Linking from 'expo-linking'
-import { useInitialRootStore } from './models'
-import { AppNavigator, useNavigationPersistence } from './navigators'
-import { ErrorBoundary } from './screens/ErrorScreen/ErrorBoundary'
-import * as storage from './utils/storage'
-import { customFontsToLoad } from './theme'
-import Config from './config'
-import { KeyboardProvider } from 'react-native-keyboard-controller'
-import { loadDateFnsLocale } from './utils/formatDate'
-import { XPProvider } from '@/contexts/XPContext'
-import { NavigationContainer } from '@react-navigation/native'
-import { LevelUpProvider } from '@/contexts/LevelUpContext'
 
-export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE'
+import "./utils/gestureHandler"
+import "./utils/ignoreWarnings"
+
+import { useEffect, useState } from "react"
+import { initI18n } from "./i18n"
+import * as SplashScreen from "expo-splash-screen"
+import { useFonts } from "expo-font"
+import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
+import * as Linking from "expo-linking"
+import { useInitialRootStore } from "./models"
+import { AppNavigator, useNavigationPersistence } from "./navigators"
+import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
+import * as storage from "./utils/storage"
+import { customFontsToLoad } from "./theme"
+import Config from "./config"
+import { KeyboardProvider } from "react-native-keyboard-controller"
+import { loadDateFnsLocale } from "./utils/formatDate"
+import { AuthProvider } from "./services/auth/useAuth"
+import { Loading } from "./components"
+import { useRealtimeSubscriptions } from "./utils/useRealtimeSubscriptions"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { usePermissions } from "@/utils/usePermissions"
+import { PermissionsModal } from "@/components/PermissionsModal"
+
+export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
+
+// Impede que a Splash do Expo feche automaticamente
+SplashScreen.preventAutoHideAsync().catch(() => {})
 
 // Web linking configuration
-const prefix = Linking.createURL('/')
-
-interface AppProps {
-  hideSplashScreen: () => Promise<void>
+const prefix = Linking.createURL("/")
+const config = {
+  screens: {
+    Login: {
+      path: "",
+    },
+    Welcome: "welcome",
+    Demo: {
+      screens: {
+        DemoShowroom: {
+          path: "showroom/:queryIndex?/:itemIndex?",
+        },
+        DemoDebug: "debug",
+        DemoPodcastList: "podcast",
+        DemoCommunity: "community",
+      },
+    },
+  },
 }
 
 /**
@@ -49,8 +59,7 @@ interface AppProps {
  * @param {AppProps} props - The props for the `App` component.
  * @returns {JSX.Element} The rendered `App` component.
  */
-export default function App(props: AppProps) {
-  const { hideSplashScreen } = props
+export function App() {
   const {
     initialNavigationState,
     onNavigationStateChange,
@@ -59,76 +68,110 @@ export default function App(props: AppProps) {
 
   const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad)
   const [isI18nInitialized, setIsI18nInitialized] = useState(false)
-  const [isNavigationReady, setIsNavigationReady] = useState(false)
-  const { rehydrated } = useInitialRootStore(() => {})
+  const { rehydrated } = useInitialRootStore(() => {
+    // Log de sucesso na inicialização
+    console.log("✅ RootStore inicializado com sucesso")
+  })
+  const [appIsReady, setAppIsReady] = useState(false)
 
-  const appIsReady
-  = rehydrated
-  && isNavigationStateRestored
-  && isI18nInitialized
-  && (areFontsLoaded || !!fontLoadError)
-  && isNavigationReady
+  const { status, isChecking, checkPermissions, openSettings } = usePermissions()
 
   useEffect(() => {
-    const prepare = async () => {
+    async function prepare() {
       try {
-        await Promise.all([
-          new Promise(resolve => setTimeout(resolve, 100)),
-        ])
-      }
-      catch (e) {
-        console.warn(e)
-      }
-      finally {
-        setIsNavigationReady(true)
+        console.log("🔄 Iniciando preparação do app...")
+        await initI18n()
+        setIsI18nInitialized(true)
+        await loadDateFnsLocale()
+        console.log("✅ App preparado com sucesso")
+      } catch (e) {
+        console.error("❌ Erro ao preparar app:", e)
+      } finally {
+        setAppIsReady(true)
       }
     }
-
     prepare()
   }, [])
 
-  useEffect(() => {
-    initI18n()
-      .then(() => setIsI18nInitialized(true))
-      .then(() => loadDateFnsLocale())
-  }, [])
-
+  // Efeito separado para verificar permissões
   useEffect(() => {
     if (appIsReady) {
-      setTimeout(() => {
-        hideSplashScreen()
-      }, 200)
+      checkPermissions()
     }
-  }, [appIsReady, hideSplashScreen])
+  }, [appIsReady])
 
-  // Before we show the app, we have to wait for our state to be ready.
-  // In the meantime, don't render anything. This will be the background
-  // color set in native by rootView's background color.
-  // In iOS: application:didFinishLaunchingWithOptions:
-  // In Android: https://stackoverflow.com/a/45838109/204044
-  // You can replace with your own loading component if you wish.
-  if (!appIsReady) {
-    return null
+  // Efeito para esconder a splash screen
+  useEffect(() => {
+    if (appIsReady && !isChecking) {
+      SplashScreen.hideAsync().catch(() => {})
+    }
+  }, [appIsReady, isChecking])
+
+  const isLoadingSomething =
+    !rehydrated ||
+    !isNavigationStateRestored ||
+    !isI18nInitialized ||
+    (!areFontsLoaded && !fontLoadError) ||
+    !appIsReady ||
+    isChecking
+
+  // Se estiver carregando recursos básicos, mostra loading
+  if (isLoadingSomething) {
+    return <Loading />
+  }
+
+  // Se não tem todas as permissões, mostra modal
+  if (!status.allGranted) {
+    return (
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <PermissionsModal
+            visible={true}
+            locationStatus={status.location}
+            cameraStatus={status.camera}
+            mediaLibraryStatus={status.mediaLibrary}
+            onRequestPermission={async (_type) => {
+              // Mostra loading enquanto verifica permissões
+              setAppIsReady(false)
+              await checkPermissions()
+              setAppIsReady(true)
+            }}
+            onOpenSettings={openSettings}
+          />
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
+    )
   }
 
   const linking = {
     prefixes: [prefix],
+    config,
   }
 
-  // otherwise, we're ready to render the app
+  // Só renderiza o app se tiver todas as permissões
   return (
-    <ErrorBoundary catchErrors={Config.catchErrors}>
-      <KeyboardProvider>
-        <XPProvider>
-          <LevelUpProvider>
-            <AppNavigator
-              linking={linking}
-              initialState={initialNavigationState}
-              onStateChange={onNavigationStateChange}
-            />
-          </LevelUpProvider>
-        </XPProvider>
-      </KeyboardProvider>
-    </ErrorBoundary>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <RealtimeProvider>
+          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+            <ErrorBoundary catchErrors={Config.catchErrors}>
+              <KeyboardProvider>
+                <AppNavigator
+                  linking={linking}
+                  initialState={initialNavigationState}
+                  onStateChange={onNavigationStateChange}
+                />
+              </KeyboardProvider>
+            </ErrorBoundary>
+          </SafeAreaProvider>
+        </RealtimeProvider>
+      </AuthProvider>
+    </GestureHandlerRootView>
   )
+}
+
+// Componente para gerenciar as subscrições realtime
+function RealtimeProvider({ children }: { children: React.ReactNode }) {
+  useRealtimeSubscriptions()
+  return <>{children}</>
 }

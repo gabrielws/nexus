@@ -1,14 +1,11 @@
-import { useCallback, useEffect, useRef } from 'react'
-import type { ImageStyle, StyleProp, ViewStyle } from 'react-native'
-import { Animated, Image, View } from 'react-native'
-import { $styles } from '../../theme'
-import type { IconTypes } from '../Icon'
-import { iconRegistry } from '../Icon'
-import type { BaseToggleInputProps, ToggleProps } from './Toggle'
-import { $inputOuterBase, Toggle } from './Toggle'
-import { useAppTheme } from '@/utils/useAppTheme'
+import { useEffect, useRef, useCallback } from "react"
+import { Image, ImageStyle, Animated, StyleProp, View, ViewStyle } from "react-native"
+import { $styles } from "../../theme"
+import { iconRegistry, IconTypes } from "../Icon"
+import { $inputOuterBase, BaseToggleInputProps, ToggleProps, Toggle } from "./Toggle"
+import { useAppTheme } from "@/utils/useAppTheme"
 
-export interface CheckboxToggleProps extends Omit<ToggleProps<CheckboxInputProps>, 'ToggleInput'> {
+export interface CheckboxToggleProps extends Omit<ToggleProps<CheckboxInputProps>, "ToggleInput"> {
   /**
    * Optional style prop that affects the Image component.
    */
@@ -20,7 +17,7 @@ export interface CheckboxToggleProps extends Omit<ToggleProps<CheckboxInputProps
 }
 
 interface CheckboxInputProps extends BaseToggleInputProps<CheckboxToggleProps> {
-  icon?: CheckboxToggleProps['icon']
+  icon?: CheckboxToggleProps["icon"]
 }
 /**
  * @param {CheckboxToggleProps} props - The props for the `Checkbox` component.
@@ -41,7 +38,7 @@ function CheckboxInput(props: CheckboxInputProps) {
     on,
     status,
     disabled,
-    icon = 'check',
+    icon = "check",
     outerStyle: $outerStyleOverride,
     innerStyle: $innerStyleOverride,
     detailStyle: $detailStyleOverride,
@@ -63,28 +60,28 @@ function CheckboxInput(props: CheckboxInputProps) {
 
   const offBackgroundColor = [
     disabled && colors.palette.neutral400,
-    status === 'error' && colors.errorBackground,
+    status === "error" && colors.errorBackground,
     colors.palette.neutral200,
-  ].filter(Boolean)[0] as any
+  ].filter(Boolean)[0]
 
   const outerBorderColor = [
     disabled && colors.palette.neutral400,
-    status === 'error' && colors.error,
+    status === "error" && colors.error,
     !on && colors.palette.neutral800,
     colors.palette.secondary500,
-  ].filter(Boolean)[0] as any
+  ].filter(Boolean)[0]
 
   const onBackgroundColor = [
     disabled && colors.transparent,
-    status === 'error' && colors.errorBackground,
+    status === "error" && colors.errorBackground,
     colors.palette.secondary500,
-  ].filter(Boolean)[0] as any
+  ].filter(Boolean)[0]
 
   const iconTintColor = [
     disabled && colors.palette.neutral600,
-    status === 'error' && colors.error,
+    status === "error" && colors.error,
     colors.palette.accent100,
-  ].filter(Boolean)[0] as any
+  ].filter(Boolean)[0]
 
   return (
     <View
@@ -118,7 +115,7 @@ function CheckboxInput(props: CheckboxInputProps) {
 const $checkboxDetail: ImageStyle = {
   width: 20,
   height: 20,
-  resizeMode: 'contain',
+  resizeMode: "contain",
 }
 
 const $inputOuter: StyleProp<ViewStyle> = [$inputOuterBase, { borderRadius: 4 }]
